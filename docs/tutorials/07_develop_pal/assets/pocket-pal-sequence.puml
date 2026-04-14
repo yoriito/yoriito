@@ -1,0 +1,36 @@
+participant main
+participant CANBroker
+participant VSSBroker
+
+== CAN Receive Loop ==
+main ->> main: on_can()
+activate main
+loop while running
+    main -> CANBroker: read()
+    CANBroker --> main: CAN frame (optional)
+    note over main, VSSBroker
+    convert can to vss
+    end note
+    main -> VSSBroker: write(VEHICLE_SPEED, 100.0, ...)
+end
+deactivate main
+
+|||
+|||
+|||
+
+== VSS Receive Loop ==
+main ->> main: on_vss()
+activate main
+main -> VSSBroker: subscribe(VEHICLE_SPEED)
+VSSBroker --> main: ProducerSubscribeContext
+
+loop while running
+    main -> ProducerSubscribeContext: Messages()
+    ProducerSubscribeContext --> main: DataPoints (optional)
+    note over main, VSSBroker
+    convert vss to can
+    end note
+    main -> CANBroker: write()
+end
+deactivate main

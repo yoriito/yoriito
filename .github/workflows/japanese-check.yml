@@ -1,0 +1,62 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2026 JASPAR
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# .github/workflows/japanese-check.yml
+# This workflow checks for Japanese character contamination in both committed files and commit messages.
+# Please refer japanese-check/README.md in "actions" repository in detail.
+
+name: Japanese contamination check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+  push:
+  workflow_dispatch:
+
+permissions:
+  pull-requests: read
+  contents: read
+
+jobs:
+  check:
+    name: Japanese_check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Check Japanese contamination
+        id: jp_check
+        uses: yoriito/actions/japanese-check@main
+        with:
+          log_level: 'modified'   # Options: 'error', 'modified', 'all'
+          exclude_patterns: ''    # (e.g.) 'README\.md\|docs/\|test/|\.yml'
+
+
+      - name: Report Japanese contamination status
+        run: |
+          IS_VALID="${{ (steps.jp_check.outputs.is_valid_files == 'true') && (steps.jp_check.outputs.is_valid_commits == 'true') }}"
+
+          echo "All files and commits don't have Japanese ? = $IS_VALID"
+          echo "Number of Japanese files = ${{ steps.jp_check.outputs.invalid_file_count }}"
+          echo "Number of Japanese commits = ${{ steps.jp_check.outputs.invalid_commit_count }}"
+
+          if [ "$IS_VALID" != "true" ]; then
+            exit 1
+          fi

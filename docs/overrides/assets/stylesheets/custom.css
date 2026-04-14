@@ -1,0 +1,417 @@
+/* ================================================================
+   Custom stylesheet for Yoriito Homepage
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   1. Theme variables
+   ---------------------------------------------------------------- */
+
+:root {
+  --md-primary-fg-color: #84A2D4;
+  --md-accent-fg-color: #446FB7;
+  --md-header-gradient-start: #34567D;
+  --color-navy: #1e3a5f;
+}
+
+body[data-md-color-scheme="default"] {
+  --md-footer-bg-color: var(--md-primary-fg-color);
+  --md-footer-bg-color--dark: var(--md-primary-fg-color);
+}
+
+/* ----------------------------------------------------------------
+   2. Full-bleed sections
+   ---------------------------------------------------------------- */
+/* Added for the documentation page*/
+.md-main__inner, .md-content {
+  max-width: 100vw !important;
+}
+/* Added for the documentation page*/
+@media (min-width: 960px) {
+  .md-content {
+    padding-left: 40px !important;  
+  }
+}
+/* Added for the documentation page*/
+.md-nav {
+  padding-left: 5px !important;
+}
+
+/* Added for the documentation page*/
+.md-typeset img,
+.md-typeset video,
+.md-typeset table {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section {
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: 1rem 0;
+}
+
+.section > .md-grid {
+  box-sizing: border-box;
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
+}
+
+@media (min-width: 60em) {
+  .section > .md-grid {
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+  }
+}
+
+.section :is(h1, h2, h3, h4, h5, h6) {
+  color: inherit;
+}
+
+/* -- Section color variants ------------------------------------ */
+
+.section-hero {
+  color: var(--md-primary-bg-color--light);
+}
+
+.section-colored {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--md-primary-fg-color) 30%, var(--md-primary-bg-color)) 0%,
+    var(--md-primary-fg-color) 100%
+  );
+}
+
+.section.section-colored .md-typeset h1,
+.section.section-colored .md-typeset h2,
+.section.section-colored .md-typeset h3,
+.section.section-colored .md-typeset p,
+.section.section-colored .md-typeset li {
+  color: var(--color-navy);
+}
+
+.section-light-colored {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--md-primary-fg-color) 5%, var(--md-primary-bg-color)) 0%,
+    color-mix(in srgb, var(--md-primary-fg-color) 15%, var(--md-primary-bg-color)) 100%
+  );
+}
+
+/* ----------------------------------------------------------------
+   3. Typography
+   ---------------------------------------------------------------- */
+
+.md-header__title .md-header__topic:first-child {
+  font-size: 1.2rem;
+}
+
+.md-tabs__link {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: var(--md-primary-bg-color);
+  opacity: 1;
+}
+
+.md-typeset p,
+.md-typeset li {
+  font-size: 0.9rem;
+}
+
+.md-copyright {
+  font-size: 0.7rem;
+}
+
+.md-social__link svg {
+  max-height: 1rem;
+}
+
+/* ----------------------------------------------------------------
+   4. Header & Footer & navigation
+   ---------------------------------------------------------------- */
+
+/* Added for the documentation page*/
+.md-footer,
+.md-footer__inner,
+.md-footer-nav,
+.md-footer-nav__link {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  height: 85px !important;
+}
+/* Added for the documentation page*/
+.md-footer__direction {
+  font-size: 0.6rem !important;
+}
+/* Added for the documentation page*/
+.md-footer__link .md-ellipsis {
+  font-size: 0.8rem !important;
+}
+
+.md-header {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--md-header-gradient-start) 90%, transparent 10%) 0%,
+    color-mix(in srgb, var(--md-accent-fg-color) 90%, transparent 10%) 100%
+  );
+}
+
+.md-nav--primary .md-nav__title {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--md-header-gradient-start) 90%, transparent 10%) 0%,
+    color-mix(in srgb, var(--md-accent-fg-color) 90%, transparent 10%) 100%
+  );
+}
+
+.md-header__title .md-header__topic + .md-header__topic {
+  display: none !important;
+}
+
+.md-header__title .md-header__topic {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.md-nav__link[href^="https"]::after,
+.md-tabs__link[href^="https"]::after {
+  content: "↗";
+  margin-left: 0.3rem;
+  font-size: 0.85em;
+  opacity: 0.7;
+}
+
+.md-nav__source {
+  background-color: var(--md-accent-fg-color);
+}
+
+/* Added for the documentation page*/
+.md-nav {
+  font-size: 1.05em;
+}
+
+/* ----------------------------------------------------------------
+   5. Global spacing tweaks
+   ---------------------------------------------------------------- */
+
+/* Modified for the documentation page: 0->5*/
+.md-main__inner.md-grid {
+  margin-top: 5;
+}
+
+article.md-content__inner.md-typeset {
+  padding-top: 0;
+}
+
+article.md-content__inner.md-typeset::before {
+  height: 0;
+}
+
+/* Modified for the documentation page: 0->5*/
+.md-content__inner {
+  margin-bottom: 5;
+}
+
+.md-typeset .md-button {
+  padding: 0.3em 1.1em;
+}
+
+/* ----------------------------------------------------------------
+   6. News pages
+   ---------------------------------------------------------------- */
+/*
+.md-content > div.md-content__inner {
+  padding-top: 0.6rem;
+}
+
+.md-content--post > article.md-content__inner.md-typeset {
+  padding-top: 1rem;
+}
+
+.md-content .md-typeset h1,
+.md-content header.md-typeset h1 {
+  color: var(--md-default-fg-color);
+}
+
+.md-content .md-typeset p,
+.md-content .md-typeset li {
+  color: var(--md-default-fg-color);
+}
+
+.md-post.md-post--excerpt {
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.4rem;
+  padding: 1rem;
+  margin: 0.8rem 0;
+}*/
+
+/* ----------------------------------------------------------------
+   7. News cards (homepage)
+   ---------------------------------------------------------------- */
+/*
+.news-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  margin: 1rem 0;
+}
+
+.md-typeset .news-cards {
+  gap: 2rem;
+}
+
+.news-cards .news-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--md-primary-bg-color);
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.4rem;
+  transition: box-shadow 0.3s ease;
+}
+
+.news-cards .news-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.news-cards .news-card-image {
+  width: 100%;
+  height: 200px;
+  padding: 1.25rem 1.25rem 0 1.25rem;
+  box-sizing: border-box;
+}
+
+.news-cards .news-card-image a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 0.3rem;
+}
+
+.news-cards .news-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.news-cards .news-card-image a:hover img {
+  transform: scale(1.05);
+}
+
+.news-cards .news-card-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1.25rem;
+}
+
+.news-cards .news-card-content > p:first-child {
+  margin-top: 0;
+}
+
+.news-cards .news-card-content > p:last-child {
+  margin-top: auto;
+  margin-bottom: 0;
+}
+
+.news-cards .news-meta {
+  font-size: 0.85rem;
+  color: var(--md-default-fg-color--light);
+  margin: 0.5rem 0 1rem 0;
+}
+
+.news-cards .md-button {
+  align-self: flex-start;
+}*/
+
+/* ----------------------------------------------------------------
+   8. FAQ page (tile layout)
+   ---------------------------------------------------------------- */
+/*
+.faq-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.faq-tile {
+  display: grid;
+  grid-template-rows: 11rem 13rem;
+  height: 24rem;
+  border-radius: 0.4rem;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s ease;
+}
+
+.faq-tile:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+}
+*/
+/* -- Question (top half) --------------------------------------- */
+/*
+.faq-tile-question {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: var(--md-primary-bg-color);
+  padding: 0.8rem;
+}
+
+.faq-tile-question::after {
+  content: '';
+  position: absolute;
+  bottom: -0.8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 1rem solid transparent;
+  border-right: 1rem solid transparent;
+  border-top: 0.8rem solid var(--md-primary-bg-color);
+  z-index: 2;
+}
+
+.faq-tile-question p {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-navy);
+  line-height: 1.5;
+}
+*/
+/* Icon: sized via font-size since Material's .twemoji svg uses 1.125em */
+/*
+.faq-tile-question .faq-tile-icon {
+  display: block;
+  font-size: 1.5rem;
+  margin-bottom: 0.4rem;
+  color: #000;
+}
+
+.faq-tile-question .faq-tile-icon svg {
+  fill: currentColor;
+}
+*/
+/* -- Answer (bottom half) -------------------------------------- */
+/*
+.faq-tile-answer {
+  display: flex;
+  align-items: center;
+  padding: 1rem 0.8rem;
+  overflow: hidden;
+  background-color: color-mix(in srgb, var(--md-primary-fg-color) 12%, white);
+}
+
+.faq-tile-answer p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--color-navy);
+  line-height: 1.6;
+}*/

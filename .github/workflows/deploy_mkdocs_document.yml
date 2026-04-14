@@ -1,0 +1,106 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2026 JASPAR
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Deploy MkDocs site
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/backnumber-*'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    # continue-on-error: true
+
+    steps:
+      - name: Checkout target branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Set deploy target
+        id: set-param
+        run: |
+          ref_name="${GITHUB_REF#refs/heads/}"
+          echo "ref_name=$ref_name"
+
+          if [[ "${ref_name}" == "main" ]]; then
+            echo "DEPLOY_TARGET=." >> $GITHUB_ENV
+            echo "DEPLOY_MSG=deploy to docs.yoriito.dev" >> $GITHUB_ENV
+
+          elif [[ "${ref_name}" == feature/backnumber-* ]]; then
+            suffix="${ref_name#feature/}"
+            echo "DEPLOY_TARGET=$suffix" >> $GITHUB_ENV
+            echo "DEPLOY_MSG=deploy to docs.yoriito.dev/${suffix}" >> $GITHUB_ENV
+
+          else
+            echo "DEPLOY_TARGET=unknown" >> $GITHUB_ENV
+            echo "DEPLOY_MSG=no deploy" >> $GITHUB_ENV
+          fi
+          
+      - name: Build MkDocs Site
+        run: mkdocs build -f mkdocs.yml --site-dir site
+ 
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
+      
+      - name: Deploy site to gh-pages
+        run: |
+          dest_dir="gh-pages/${DEPLOY_TARGET}"
+          mkdir -p "$dest_dir"
+
+          if [ "$DEPLOY_TARGET" = "." ]; then
+            rsync -a --delete \
+              --exclude 'CNAME' \
+              --exclude 'test-*' \
+              --exclude 'tutorials-*' \
+              --exclude 'apirefguide-br' \
+              --exclude 'releasenotes-br' \
+              --exclude 'backnumber-*' \
+              --exclude '.git' \
+              site/ "$dest_dir/"
+          else
+            rm -rf gh-pages/$DEPLOY_TARGET/*
+            cp -r site/* gh-pages/$DEPLOY_TARGET/
+          fi
+ 
+      - name: Commit and push changes
+        run: |
+          cd gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add $DEPLOY_TARGET
+          git commit -m "Deploy to gh-pages: $DEPLOY_TARGET from ${{ github.ref }}" || echo "No changes to commit"
+          git pull origin gh-pages --no-rebase || true
+          git push origin HEAD:gh-pages

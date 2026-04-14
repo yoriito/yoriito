@@ -1,0 +1,8 @@
+# MkDocs and Material for MkDocs - pinned versions for stability
+# These versions are locked to avoid breaking changes from MkDocs 2.0
+# See: https://squidfunk.github.io/mkdocs-material/blog/2026/02/18/mkdocs-2.0/
+mkdocs==1.6.1
+mkdocs-material==9.7.0
+mkdocs-macros-plugin
+mkdocs-table-reader-plugin
+macros

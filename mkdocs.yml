@@ -1,0 +1,79 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2026 JASPAR
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+site_name: Yoriito Project
+docs_dir: docs
+site_dir: site # default output folder of mkdocs
+use_directory_urls: true
+
+theme:
+  name: material
+  language: en
+  font:
+    text: "Inter" # For clean rendering on Windows
+  custom_dir: overrides
+  palette:
+    scheme: default
+    primary: custom
+    accent: custom
+  features:
+    - navigation.tabs
+    #- navigation.tabs.sticky
+    - content.code.copy
+    #- header.autohide
+    - search.suggest
+    - search.highlight
+    #- navigation.indexes
+    #- navigation.expand
+    - navigation.footer
+  logo: assets/yoriito.png
+  favicon: assets/yoriito.png
+
+nav:
+  - Home: index.md
+  - Release Notes: 
+      - Table of Contents: releasenotes/index.md
+  - Tutorials:
+      #- Table of Contents: tutorials/00_target_audience/00_1_target_audience.md
+      - Table of Contents: tutorials/index.md
+      - Part1 Theory:
+          - 1. What is the Yoriito Vehicle API?: tutorials/01_yoriito_vehicle_api_overview/01_yoriito_vehicle_api_overview.md
+          - 2. System Configuration/Scope/Versioning: tutorials/02_system_scope_versioning/02_system_scope_versioning.md
+          - 3. Introduction to VSS/VISS: tutorials/03_VSS_VISS/03_vss_viss.md
+      - Part2 Practice:
+          - 4. Setting Up the Application Development Environment: tutorials/04_environment_setup/04_environment_setup.md
+          - 5. Building Your First Yoriito Vehicle API Application: tutorials/05_app_tutorial/05_app_tutorial.md
+          - 6. Controlling the Simulator Vehicle: tutorials/06_control_sim_vehicle/06_control_sim_vehicle.md
+          - 7. Developing a custom PAL to connect CAN and Kura: tutorials/07_develop_pal/07_develop_pal.md
+      - Appendix:
+          - 8. Glossary: tutorials/08_glossary/glossary.md
+  - API Reference: 
+      - Table of Contents: apirefguide/index.md
+  - Design Documentation:
+      - Table of Contents: design/index.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - toc:
+      permalink: false
+      toc_depth: 0
+plugins:
+  - search
+  - macros
+  - table-reader
+copyright: Copyright 2026 JASPAR
