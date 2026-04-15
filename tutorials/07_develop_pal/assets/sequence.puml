@@ -1,0 +1,11 @@
+@startuml
+participant TUI
+participant kura
+participant PAL
+participant vcan
+
+vcan ->> PAL : 1.send can frame
+PAL  ->> kura: 2.send vss signal
+TUI  -> kura: 3.read vss signal
+kura --> TUI: 4.return vss signal
+@enduml

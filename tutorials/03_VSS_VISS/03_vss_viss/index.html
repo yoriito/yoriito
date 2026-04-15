@@ -1,0 +1,1906 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../02_system_scope_versioning/02_system_scope_versioning/">
+      
+      
+        <link rel="next" href="../../04_environment_setup/04_environment_setup/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>3. Introduction to VSS/VISS - Yoriito Project</title>
+      
+    
+    
+  
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+  <link rel="stylesheet" href="../../../assets/stylesheets/custom.css">
+
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Yoriito Project" class="md-header__button md-logo" aria-label="Yoriito Project" data-md-component="logo">
+      
+  <img src="../../../assets/yoriito.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Yoriito Project
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              3. Introduction to VSS/VISS
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../releasenotes/" class="md-tabs__link">
+          
+  
+  
+  Release Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../apirefguide/" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../design/" class="md-tabs__link">
+          
+  
+  
+  Design Documentation
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Yoriito Project" class="md-nav__button md-logo" aria-label="Yoriito Project" data-md-component="logo">
+      
+  <img src="../../../assets/yoriito.png" alt="logo">
+
+    </a>
+    Yoriito Project
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release Notes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Release Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../releasenotes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Table of Contents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Table of Contents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part1 Theory
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part1 Theory
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01_yoriito_vehicle_api_overview/01_yoriito_vehicle_api_overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. What is the Yoriito Vehicle API?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02_system_scope_versioning/02_system_scope_versioning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. System Configuration/Scope/Versioning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Introduction to VSS/VISS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part2 Practice
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part2 Practice
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04_environment_setup/04_environment_setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Setting Up the Application Development Environment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05_app_tutorial/05_app_tutorial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Building Your First Yoriito Vehicle API Application
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06_control_sim_vehicle/06_control_sim_vehicle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Controlling the Simulator Vehicle
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../07_develop_pal/07_develop_pal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Developing a custom PAL to connect CAN and Kura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Appendix
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../08_glossary/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../apirefguide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Table of Contents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Documentation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Design Documentation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Table of Contents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="part1-theory">Part1 Theory</h1>
+<h2 id="3-introduction-to-vssviss">3. Introduction to VSS/VISS 🚗</h2>
+<h3 id="3-1-introduction">3-1. Introduction</h3>
+<p>In this section, we explain VSS and VISS, which form the foundation of the Yoriito Vehicle API.
+These are standard specifications for vehicle data defined by COVESA (Connected Vehicle Systems Alliance), and the Vehicle API is built on top of them.</p>
+<p>By understanding VSS / VISS, the goal of this section is to help you better understand the design intent of the Vehicle API and how it differs from COVESA VSS/VISS.</p>
+<h3 id="3-2-background">3-2. Background</h3>
+<p>Modern vehicles have thousands of signals (sensor values, actuator states, vehicle attributes, etc.). Traditionally, the names, data formats, and access methods of these signals have differed between OEMs (automakers) and even between vehicle models.</p>
+<p>This has caused the following issues:</p>
+<ul>
+<li><strong>Lack of application portability:</strong><br />
+  Applications developed for one vehicle model need major modifications to run on another model or on vehicles from another OEM.  </li>
+<li><strong>Increased development cost:</strong><br />
+  For each vehicle model, developers have to research and implement signal meanings and access methods.  </li>
+<li><strong>Fragmented ecosystem:</strong><br />
+  It is difficult for third-party developers to build applications for vehicles.  </li>
+</ul>
+<p>To solve these issues, COVESA is standardizing the data model for vehicle signals (VSS) and the access protocol (VISS).</p>
+<h3 id="3-3-covesa-vssviss">3-3. COVESA VSS/VISS</h3>
+<h4 id="3-3-1-what-is-vss-vehicle-signal-specification">3-3-1. What is VSS (Vehicle Signal Specification)?</h4>
+<p>VSS is a standard specification of a data model that defines the "semantics and structure" of vehicle signals.</p>
+<h5 id="overview">Overview</h5>
+<p>VSS consists of the following two elements:</p>
+<ol>
+<li><strong>Syntax rules</strong>: Rules for how to define vehicle signals  </li>
+<li><strong>Standard catalog</strong>: A collection of definitions for common vehicle signals  </li>
+</ol>
+<p>The standard catalog predefines signals that are common to many vehicles, such as vehicle speed, engine RPM, door open/close states, and so on.</p>
+<p>In the Vehicle API, based on COVESA VSS, we add necessary signal definitions, remove unnecessary/duplicate signals, and modify existing ones to provide a Yoriito Vehicle API–specific VSS data tree.</p>
+<h5 id="tree-structure">Tree structure</h5>
+<p>In VSS, vehicle signals are expressed as a hierarchical tree structure. The root node is <code>Vehicle</code>, under which branches like <code>Powertrain</code>, <code>Chassis</code>, and <code>Body</code> follow.</p>
+<div class="highlight"><pre><span></span><code>Vehicle
+├── Speed                          # Vehicle speed
+├── Powertrain
+│   └── TractionBattery
+│       └── StateOfCharge
+│           └── CurrentEnergy      # Battery energy remaining
+├── Chassis
+│   └── Accelerator
+│       └── PedalPosition          # Accelerator pedal position
+└── Body
+    ├── Lights
+    │   └── Beam
+    │       └── Low
+    │           └── IsOn           # Low-beam headlamp state
+    └── Trunk
+        └── Rear
+            └── IsOpen             # Trunk open/close state
+</code></pre></div>
+<h5 id="signal-types">Signal types</h5>
+<p>In VSS, signals are classified into the following three types:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sensor</strong></td>
+<td>Read-only signals representing current state from sensors</td>
+<td>Vehicle speed, outside temperature, SoC</td>
+</tr>
+<tr>
+<td><strong>Actuator</strong></td>
+<td>Read/write signals representing controllable state</td>
+<td>Door lock, window position, seat position</td>
+</tr>
+<tr>
+<td><strong>Attribute</strong></td>
+<td>Immutable signals representing static attributes of the vehicle</td>
+<td>VIN, max power, fuel type</td>
+</tr>
+</tbody>
+</table>
+<p>For Actuators, the state of a control target is represented by two values:</p>
+<ul>
+<li>
+<p><strong>Current Value:</strong> The current state of the control target</p>
+</li>
+<li>
+<p><strong>Target Value:</strong> The future state the control target should reach</p>
+</li>
+</ul>
+<p>For example, when changing the seat position from 0 to 100, the <strong>Target Value</strong> becomes 100 immediately, but the <strong>Current Value</strong> changes gradually until the mechanical movement completes. During this period, the two values differ.</p>
+<blockquote>
+<p>For more details on VSS, see the official documents below:  </p>
+<ul>
+<li><a href="https://covesa.github.io/vehicle_signal_specification/introduction/overview/">Overview</a>  </li>
+<li><a href="https://covesa.github.io/vehicle_signal_specification/introduction/sensors_actuators_attributes/">Sensors, Actuators and Attributes</a>  </li>
+<li><a href="https://github.com/COVESA/vehicle_signal_specification">GitHub – COVESA VSS</a>  </li>
+</ul>
+</blockquote>
+<h4 id="3-3-2-what-is-viss-vehicle-information-service-specification">3-3-2. What is VISS (Vehicle Information Service Specification)?</h4>
+<p>VISS is a protocol specification for accessing the signal tree defined by VSS.<br />
+While VSS defines "what data exists," VISS defines "how to access that data."</p>
+<h5 id="overview_1">Overview</h5>
+<p>Using VISS, applications can perform the following unified operations on signals in the VSS tree:</p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Read</strong></td>
+<td>Retrieve the current value of a specified signal once</td>
+</tr>
+<tr>
+<td><strong>Subscribe</strong></td>
+<td>Receive a notification whenever the value of a specified signal changes</td>
+</tr>
+<tr>
+<td><strong>Write</strong></td>
+<td>Write a value to a specified signal (mainly used to set actuator Target Values)</td>
+</tr>
+<tr>
+<td><strong>Metadata</strong></td>
+<td>Retrieve meta-information about signals (data type, unit, description, etc.)</td>
+</tr>
+</tbody>
+</table>
+<p>A VISS Server holds information about the VSS tree and processes these operations in response to client requests.</p>
+<h5 id="transport-protocols">Transport protocols</h5>
+<p>VISS supports multiple transport protocols; supported protocols differ by version.</p>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Supported protocols</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VISS v1</td>
+<td>WebSocket</td>
+</tr>
+<tr>
+<td>VISS v2</td>
+<td>WebSocket, HTTP, MQTT</td>
+</tr>
+<tr>
+<td>VISS v3</td>
+<td>WebSocket, HTTP, MQTT, gRPC</td>
+</tr>
+</tbody>
+</table>
+<p>The Yoriito Vehicle API adopts <strong>gRPC-based VISS</strong>, focusing on performance and type safety.</p>
+<h5 id="error-responses">Error responses</h5>
+<p>In VISS, error responses consist of the following three elements:</p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Error code (number)</strong></td>
+<td>Numeric value conforming to HTTP status codes (400, 404, 503, etc.)</td>
+</tr>
+<tr>
+<td><strong>Error reason (reason)</strong></td>
+<td>Identifier indicating the error type (e.g., <code>bad_request</code>, <code>not_found</code>)</td>
+</tr>
+<tr>
+<td><strong>Error description (description)</strong></td>
+<td>Human-readable detailed error description</td>
+</tr>
+</tbody>
+</table>
+<p>This structure is defined in COVESA VISS v3.</p>
+<blockquote>
+<p>For more details on VISS, see the official documents below:</p>
+<ul>
+<li><a href="https://covesa.global/project/vehicle-information-service-specification/">Overview</a></li>
+<li><a href="https://github.com/COVESA/vehicle-information-service-specification">GitHub – COVESA VISS</a></li>
+<li><a href="https://covesa.github.io/vehicle_signal_specification/ecosystem/standards/index.html">VISS and related standards</a></li>
+</ul>
+</blockquote>
+<h4 id="3-3-3-relationship-between-vss-and-viss">3-3-3. Relationship between VSS and VISS</h4>
+<p>VSS and VISS have different roles but are used together.</p>
+<p><img alt="COVESA_VISS_Overview" src="../assets/COVESA_VISS_Overview.drawio.svg" /></p>
+<p align="center"><em>Figure: COVESA VISS Overview</em></p>
+
+<ul>
+<li>
+<p><strong>VSS</strong>: Defines the "name," "meaning," and "structure" of signals (data model)</p>
+</li>
+<li>
+<p><strong>VISS</strong>: Defines "how to access" those signals (protocol)</p>
+</li>
+</ul>
+<p>By separating these, the data model and access method can evolve independently.</p>
+<h3 id="3-4-yoriito-vssviss">3-4. Yoriito VSS/VISS</h3>
+<h4 id="3-4-1-about-yoriito-vss">3-4-1. About Yoriito VSS</h4>
+<h5 id="role-of-vss-in-the-yoriito-vehicle-api-yoriito-vss">Role of VSS in the Yoriito Vehicle API (Yoriito VSS)</h5>
+<p>In the Yoriito Vehicle API, VSS is positioned as a "common data model / signal catalog" for handling vehicle signals in a unified way.</p>
+<p>Based on the generic vehicle signal tree defined by COVESA VSS, Yoriito VSS performs additions of necessary signals, removal of unnecessary signals, and normalization (cleanup) of meanings and structures for the Vehicle API.</p>
+<h5 id="how-to-obtain-and-inspect-yoriito-vss">How to obtain and inspect Yoriito VSS</h5>
+<p>Clone the following repository: https://github.com/yoriito/yoriito-vss.git</p>
+<p>Like COVESA VSS, Yoriito VSS can be exported in tree or CSV format using the VSS tool.
+In particular, CSV format is highly readable when you need to check signal units and descriptions.</p>
+<p>Example command to export Yoriito VSS in CSV format:</p>
+<p><div class="highlight"><pre><span></span><code>vspec<span class="w"> </span><span class="nb">export</span><span class="w"> </span>csv<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--vspec<span class="w"> </span>./vehicle_signal_specification/spec/VehicleSignalSpecification.vspec<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="k">$(</span>find<span class="w"> </span>./vss<span class="w"> </span>-name<span class="w"> </span><span class="s1">&#39;*.vspec&#39;</span><span class="w"> </span>-exec<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>--overlays<span class="w"> </span><span class="o">{}</span><span class="w"> </span><span class="se">\;</span><span class="k">)</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>Yoriito_vss_v5.0.csv
+</code></pre></div>
+For details on how to use the VSS tool, see: https://covesa.github.io/vehicle_signal_specification/ecosystem/tools/index.html</p>
+<h5 id="differences-between-covesa-vss-and-yoriito-vss">Differences between COVESA VSS and Yoriito VSS</h5>
+<p>Yoriito VSS is COVESA VSS with normalization (additions, modifications, deletions of signals) applied.<br />
+"Normalization" in Yoriito VSS means organizing each signal from consistent perspectives. Examples include:  </p>
+<ul>
+<li>The data model provides OEM- and vehicle-model–independent definitions.  </li>
+<li>To clarify containment relationships, nodes are expressed in the order:
+equipment → (sub-equipment → …) → function → (sub-function → …) → properties.  </li>
+<li>When the data model handles coordinate information, it uses right-hand coordinate system, Z-up, X-front, and explicitly documents this in the specification so API users can use it without confusion.  </li>
+<li>The data model does not define internal states for asynchronous waiting.  </li>
+<li>When a data value is outside the defined range, use Other; when the value is not yet determined, use Unknown.  </li>
+<li>The data model is not defined by implementation methods or by use cases; instead, it is defined for equipment and provided functions.  </li>
+<li>Information that can be derived from other data models is not defined as a separate data model.  <ul>
+<li>Example: <code>StateOfCharge.CurrentEnergy</code> can be calculated as <code>StateOfCharge.Current × TractionBattery.NetCapacity</code>, so <code>StateOfCharge.CurrentEnergy</code> is removed.  </li>
+</ul>
+</li>
+</ul>
+<h5 id="vss-operation-at-oems">VSS operation at OEMs</h5>
+<p>As described above, Yoriito VSS is COVESA VSS normalized for the Vehicle API, and Vehicle API users can reference and set vehicle signals defined in Yoriito VSS.</p>
+<p>In the same way that Yoriito VSS extends <a href="https://covesa.github.io/vehicle_signal_specification/extensions/overlay/index.html">COVESA VSS using Overlay</a>,
+each OEM that uses Yoriito VSS can extend it to create its own OEM VSS.</p>
+<p>VSS can be overlaid in the order: COVESA → Yoriito → OEM.</p>
+<p><img alt="overlay" src="../assets/overlay.svg" /></p>
+<p>The defined VSS signals and their metadata are held by the Yoriito VISS Server, so you must provide VSS information to the Yoriito VISS Server.</p>
+<p>The Yoriito VISS Server supports two timing options to configure VSS information:</p>
+<ul>
+<li><strong>Static configuration:</strong><br />
+  Specify VSS files at Yoriito VISS Server startup.  </li>
+<li><strong>Dynamic configuration:</strong><br />
+  Configure VSS via the Yoriito VISS Producer Library after the Yoriito VISS Server has started.  </li>
+</ul>
+<p>When overlaying the VSS tree, in addition to complying with the VSS specification, you must follow constraints unique to the Yoriito Vehicle API. These constraints are required so that the Yoriito VISS Server and Vehicle API libraries function correctly.</p>
+<p>For example, changing a signal type (e.g., from integer to string) is prohibited because it affects data operations inside the Yoriito VISS Server and Vehicle API libraries.</p>
+<p>Targets of VSS overlays are broadly classified as follows:</p>
+<ul>
+<li>Signal definitions: VSS node definitions. Overlay can be used to add new signals or remove existing signals.  </li>
+<li>Metadata: Metadata definitions associated with each VSS node definition. Overlaying existing signal metadata can be used to change default values, etc.  </li>
+<li>Instances: Mechanisms to generate multiple sets of VSS nodes that share the same VSS tree structure, such as doors. For example, you can overlay the number of doors or how positions are specified (<code>Row1</code>, <code>DriverSide</code>, etc.).  </li>
+</ul>
+<p>For each of these elements, whether and how overlay is allowed is defined as follows.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Target</strong></th>
+<th><strong>Overlay allowed?</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Signals</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>Add new signal</td>
+<td>Allowed</td>
+</tr>
+<tr>
+<td>Delete existing signal</td>
+<td>Allowed</td>
+</tr>
+<tr>
+<td><strong>Metadata</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>Change value of Existing Metadata*</td>
+<td></td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;<code>type</code></td>
+<td>Prohibited</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;<code>datatype</code></td>
+<td>Prohibited</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;<code>comment</code></td>
+<td>Prohibited</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;<code>min</code></td>
+<td>Allowed</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;<code>max</code></td>
+<td>Allowed</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;<code>unit</code></td>
+<td>Prohibited</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;<code>pattern</code></td>
+<td>Prohibited</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;<code>default</code></td>
+<td>Allowed</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;<code>allowed</code></td>
+<td>Allowed</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;<code>arraysize</code></td>
+<td>Prohibited</td>
+</tr>
+<tr>
+<td>Add new metadata kinds</td>
+<td>Allowed</td>
+</tr>
+<tr>
+<td>Delete existing metadata kinds</td>
+<td>Prohibited</td>
+</tr>
+<tr>
+<td><strong>Instances</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>Add new instance dimension</td>
+<td>Prohibited</td>
+</tr>
+<tr>
+<td>Delete existing instance dimension</td>
+<td>Prohibited</td>
+</tr>
+<tr>
+<td>Add new instance element index</td>
+<td>Allowed</td>
+</tr>
+<tr>
+<td>Delete existing instance element index</td>
+<td>Allowed</td>
+</tr>
+<tr>
+<td>Add new instance element name</td>
+<td>Prohibited</td>
+</tr>
+<tr>
+<td>Delete existing instance element name</td>
+<td>Allowed</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>https://covesa.github.io/vehicle_signal_specification/rule_set/data_entry/sensor_actuator/index.html#optional-data-entry-attributes</li>
+</ul>
+<p>As long as changes follow the above rules, the Yoriito VISS Server and Vehicle API libraries will function correctly.
+For overlays that do not follow these rules, the Yoriito Vehicle API cannot guarantee correct behavior of its deliverables, so users must handle them on their own.</p>
+<h3 id="3-4-2-about-yoriito-viss">3-4-2. About Yoriito VISS</h3>
+<p>In the architecture of the Yoriito Vehicle API, the Yoriito VISS Server (kura) plays a central role. It manages the VSS tree and acts as a "data hub" connecting the upper layers (Yoriito Signal API / applications) and the lower layers (PAL / vehicle platform).</p>
+<p><img alt="Yoriito_VISS_Overview" src="../assets/Yoriito_VISS_Overview.drawio.svg" /></p>
+<p align="center"><em>Figure: Yoriito VISS Overview</em></p>
+
+<p>Access from the upper layers is mainly via the <strong>DataBroker Consumer API</strong>, and signal supply from the lower layers is via the <strong>DataBroker Producer API</strong>.</p>
+<p>Behind these abstract interfaces, the Yoriito VISS Consumer/Producer Libraries communicate with the VISS Server using the VISS protocol. Thanks to this structure:</p>
+<p>Application developers and PAL developers can each use APIs suited to their responsibilities.</p>
+<p>They do not need to care about details of the communication backend.</p>
+<h5 id="relationship-among-vss-viss-yoriito-signal-api">Relationship among VSS / VISS / Yoriito Signal API</h5>
+<p>The relationship between the elements that make up the Yoriito Vehicle API can be summarized as follows.</p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Yoriito VSS</strong></td>
+<td>Data model defining the "meaning and structure" of vehicle signals. Specifies tree structure, data types, units, etc.</td>
+</tr>
+<tr>
+<td><strong>Yoriito VISS</strong></td>
+<td>Protocol and message schema for manipulating the VSS tree. In the Yoriito Vehicle API, this is defined using gRPC. It consists of two services: Consumer Service and Producer Service (see below).</td>
+</tr>
+<tr>
+<td><strong>Yoriito VISS Consumer / Producer Library</strong></td>
+<td>Client libraries that wrap the VISS protocol (Consumer/Producer Service). They implement the DataBroker Consumer/Producer API and allow developers to avoid using gRPC directly.</td>
+</tr>
+<tr>
+<td><strong>DataBroker Consumer / Producer API</strong></td>
+<td>Abstract interface that hides details of communication backend access. Yoriito Signal API and PAL Software use this interface to communicate, without depending on details of the backend (such as VISS).</td>
+</tr>
+<tr>
+<td><strong>Yoriito Signal API</strong></td>
+<td>Low-level API for application developers. Internally accesses the Yoriito VISS Server via the DataBroker Consumer API.</td>
+</tr>
+<tr>
+<td><strong>Yoriito Access API</strong></td>
+<td>High-level API for application developers.</td>
+</tr>
+</tbody>
+</table>
+<p>Application developers use the Yoriito Access API and Yoriito Signal API to access vehicle signals. PAL developers supply vehicle-side signals to the Yoriito VISS Server via the DataBroker Producer API. In both cases, communication with the VISS Server is performed by the Yoriito VISS Consumer/Producer Library behind the scenes.</p>
+<h5 id="differences-between-covesa-viss-v3-and-yoriito-viss">Differences between COVESA VISS v3 and Yoriito VISS</h5>
+<p>Yoriito VISS is based on COVESA VISS v3 but introduces some changes and extensions. The main differences are summarized below.</p>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>COVESA VISS v3</th>
+<th>Yoriito VISS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Interface toward PAL/vehicle platform</td>
+<td>Not clearly defined</td>
+<td>Application-facing and PAL/vehicle-platform-facing interfaces are separated and defined as Consumer/Producer Services</td>
+</tr>
+<tr>
+<td>Transport</td>
+<td>WebSocket, HTTP, MQTT are mandatory; gRPC is optional</td>
+<td>Specialized for gRPC</td>
+</tr>
+<tr>
+<td>Service structure</td>
+<td>Single service (Get, Set, Subscribe, Unsubscribe) handles both Current and Target values</td>
+<td>Access separation by Consumer/Producer Services; some RPC methods are added</td>
+</tr>
+<tr>
+<td>Data representation</td>
+<td>JSON Schema based</td>
+<td>Strongly typed Protocol Buffers</td>
+</tr>
+</tbody>
+</table>
+<p>More details are given below.</p>
+<h6 id="separation-of-responsibilities-via-consumer-producer-services">Separation of responsibilities via Consumer / Producer Services</h6>
+<p><u>Consumer Service</u>  </p>
+<p>The Consumer Service is a VISS service definition for applications and upper-layer middleware to access the VSS tree.</p>
+<ul>
+<li>Read / Subscribe for Current Values  </li>
+<li>Write of Target Values  </li>
+</ul>
+<p>It provides the operations needed for typical application development, such as "referencing vehicle state" and "issuing control requests."  </p>
+<p>The VISS Consumer Library provides the client implementation of this service and functions as the implementation of the DataBroker Consumer API.</p>
+<p><u>Producer Service</u><br />
+The Producer Service is a VISS service definition for PAL and the vehicle platform to provide signals to the VSS tree.</p>
+<ul>
+<li>Write of Current Values  </li>
+<li>Read / Subscribe for Target Values  </li>
+</ul>
+<p>It reflects actual values obtained from ECUs and sensors into the VISS Server and receives control requests (Target Values) from applications to pass them to the vehicle side.</p>
+<p>The VISS Producer Library provides the client implementation of this service and functions as the implementation of the DataBroker Producer API.</p>
+<p><u>Significance of the separation</u><br />
+This separation brings the following benefits:</p>
+<ul>
+<li><strong>Clear responsibility boundaries</strong>:<br />
+  Clarifies "who can update vehicle signals" and "through which paths updates are allowed" in system design.  </li>
+<li><strong>Security</strong>:<br />
+  Prevents applications from directly overwriting Current Values, protecting the consistency of vehicle signals.  </li>
+<li><strong>Independent development</strong>: <br />
+  Application developers and PAL developers each use only the APIs corresponding to their responsibilities.  </li>
+<li><strong>Clarified PAL specifications and improved reusability</strong>: <br />
+  By providing standardized interfaces not only for applications but also for PAL, PAL responsibilities become clearer and PAL can be reused more easily.  </li>
+</ul>
+<h6 id="transport-protocol">Transport protocol</h6>
+<p>COVESA VISS v3 defines WebSocket and HTTP as mandatory, and MQTT and gRPC as optional.<br />
+In contrast, Yoriito VISS adopts <strong>only gRPC</strong> as the transport protocol.</p>
+<p>Reasons for choosing gRPC include:</p>
+<ul>
+<li><strong>Performance</strong>:<br />
+  Smaller data size and faster parsing compared to JSON thanks to binary serialization with Protocol Buffers.  </li>
+<li><strong>Type safety</strong>:<br />
+  Schema defined in <code>.proto</code> files enables compile-time type checking.  </li>
+<li><strong>Code generation</strong>:<br />
+  Client/server code for multiple languages can be auto-generated, improving development efficiency.  </li>
+<li><strong>Streaming</strong>:<br />
+  Server-streaming RPC makes it natural to implement Subscribe functionality.  </li>
+</ul>
+<h6 id="service-structure">Service structure</h6>
+<p>In COVESA VISS v3, a single service provides the following actions:</p>
+<ul>
+<li><code>Get</code>: Get signal values  </li>
+<li><code>Set</code>: Set signal values  </li>
+<li><code>Subscribe</code>: Start subscription of signal values  </li>
+<li><code>Unsubscribe</code>: Cancel subscription  </li>
+</ul>
+<p>Yoriito VISS splits this into <strong>Consumer Service</strong> and <strong>Producer Service</strong>, and clearly separates Current Values from Target Values.</p>
+<h5 id="consumer-service-yoriitovissv1consumerviss">Consumer Service (<code>yoriito.viss.v1.consumer.VISS</code>)</h5>
+<table>
+<thead>
+<tr>
+<th>RPC method</th>
+<th>Description</th>
+<th>Correspondence to COVESA VISS v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GetCurrent</code></td>
+<td>Get Current Values</td>
+<td>Part of <code>Get</code></td>
+</tr>
+<tr>
+<td><code>SetTarget</code></td>
+<td>Set Target Values</td>
+<td>Part of <code>Set</code></td>
+</tr>
+<tr>
+<td><code>SubscribeCurrent</code></td>
+<td>Subscribe to Current Values</td>
+<td>Part of <code>Subscribe</code></td>
+</tr>
+<tr>
+<td><code>Unsubscribe</code></td>
+<td>Cancel subscription</td>
+<td><code>Unsubscribe</code></td>
+</tr>
+<tr>
+<td><code>Inspect</code></td>
+<td>Get metadata</td>
+<td>Part of <code>Get</code> (via <code>MetadataFilter</code>)</td>
+</tr>
+</tbody>
+</table>
+<h5 id="producer-service-yoriitovissv1producerviss">Producer Service (<code>yoriito.viss.v1.producer.VISS</code>)</h5>
+<table>
+<thead>
+<tr>
+<th>RPC method</th>
+<th>Description</th>
+<th>Correspondence to COVESA VISS v3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GetTarget</code></td>
+<td>Get Target Values</td>
+<td>Part of <code>Get</code></td>
+</tr>
+<tr>
+<td><code>SetCurrent</code></td>
+<td>Set Current Values</td>
+<td>Part of <code>Set</code></td>
+</tr>
+<tr>
+<td><code>SubscribeTarget</code></td>
+<td>Subscribe to Target Values</td>
+<td>Part of <code>Subscribe</code></td>
+</tr>
+<tr>
+<td><code>Unsubscribe</code></td>
+<td>Cancel subscription</td>
+<td><code>Unsubscribe</code></td>
+</tr>
+<tr>
+<td><code>Inspect</code></td>
+<td>Get metadata</td>
+<td>Part of <code>Get</code> (via <code>MetadataFilter</code>)</td>
+</tr>
+<tr>
+<td><code>Define</code></td>
+<td>Add VSS node definitions at runtime</td>
+<td><strong>Yoriito VISS specific</strong></td>
+</tr>
+<tr>
+<td><code>Delete</code></td>
+<td>Delete VSS node definitions</td>
+<td><strong>Yoriito VISS specific</strong></td>
+</tr>
+</tbody>
+</table>
+<h6 id="yoriito-viss-specific-extensions-inspect-define-delete">Yoriito VISS-specific extensions: Inspect / Define / Delete</h6>
+<p>Yoriito VISS introduces the following RPC methods that do not exist in COVESA VISS v3:</p>
+<ul>
+<li><strong>Inspect</strong>: <br />
+  Retrieves metadata of VSS nodes (data type, unit, description, etc.). Available in both Consumer and Producer Services.  </li>
+<li><strong>Define</strong>:<br />
+  Adds VSS node definitions at runtime. Used by PAL to register needed signals in the VISS Server according to the vehicle platform configuration (Producer Service only).  </li>
+<li><strong>Delete</strong>:<br />
+  Deletes defined VSS nodes (Producer Service only).  </li>
+</ul>
+<p>With Define / Delete, it becomes possible to modify static VSS definitions files on already released vehicles after deployment.<br />
+This allows flexible construction of the VSS tree as vehicles and software evolve.</p>
+<blockquote>
+<p>Note: Define/Delete are currently under development and not yet available.</p>
+</blockquote>
+<h6 id="message-schema-differences">Message schema differences</h6>
+<p>COVESA VISS v3 defines message formats using JSON Schema. Yoriito VISS defines them with Protocol Buffers (<code>.proto</code> files), with characteristics such as:</p>
+<h5 id="strict-definition-of-data-types">Strict definition of data types</h5>
+<p>In Yoriito VISS, <code>ValueType</code> corresponding to VSS data types is defined using Protocol Buffers, <code>oneof</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">message</span><span class="w"> </span><span class="nc">ValueType</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">oneof</span><span class="w"> </span><span class="n">value_type</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">string</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">11</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">sint32</span><span class="w"> </span><span class="na">int8</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">13</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">sint32</span><span class="w"> </span><span class="na">int16</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">14</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">sint32</span><span class="w"> </span><span class="kt">int32</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">sint64</span><span class="w"> </span><span class="kt">int64</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint32</span><span class="w"> </span><span class="na">uint8</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">17</span><span class="p">;</span>
+<span class="w">    </span><span class="c1">// ... other types as well</span>
+<span class="w">    </span><span class="n">ValueObject</span><span class="w"> </span><span class="na">value_object</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">35</span><span class="p">;</span><span class="w">  </span><span class="c1">// corresponds to VSS struct</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h6 id="separation-of-current-and-target">Separation of Current and Target</h6>
+<p><code>DataPackage</code>, the data structure for storing VSS signal data, is also split between Current and Target.<br />
+This allows control of which data can be accessed by applications and PAL:</p>
+<ul>
+<li><code>DataPackagesCurrent</code> / <code>DataPointCurrent</code>: For Current Values (includes timestamps and Availability information)  </li>
+<li><code>DataPackagesTarget</code> / <code>DataPointTarget</code>: For Target Values  </li>
+</ul>
+<h6 id="simplified-metadata">Simplified metadata</h6>
+<p>For some metadata attributes in COVESA VSS, Yoriito VISS simplifies implementation to improve practicality:</p>
+<ul>
+<li><code>pattern</code>: Only supports string arrays (a single string is treated as an array of one element).  </li>
+<li><code>max</code> / <code>min</code>: Only <code>int32</code> type is supported (sufficient for practical ranges).  </li>
+<li><code>allowed</code>: Only string arrays are supported (enumeration values expressed as strings).</li>
+</ul>
+<h6 id="filter-differences">Filter differences</h6>
+<p>In COVESA VISS v3, filters are expressed as combinations of <code>variant</code> and <code>parameter</code>. In Yoriito VISS, filters are defined as structured messages that leverage the gRPC type system.<br />
+This allows stronger integration with static typing.</p>
+<table>
+<thead>
+<tr>
+<th>Filter type</th>
+<th>Description</th>
+<th>Corresponding type in Yoriito VISS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>paths</code></td>
+<td>Specify multiple paths</td>
+<td><code>PathsFilter</code></td>
+</tr>
+<tr>
+<td><code>timebased</code></td>
+<td>Time-interval-based notifications</td>
+<td><code>TimebasedFilter</code></td>
+</tr>
+<tr>
+<td><code>change</code></td>
+<td>Notify on value changes</td>
+<td><code>ChangeFilter</code></td>
+</tr>
+<tr>
+<td><code>range</code></td>
+<td>Notify based on range conditions</td>
+<td><code>RangeFilter</code></td>
+</tr>
+<tr>
+<td><code>curvelog</code></td>
+<td>Curve-log filter</td>
+<td><code>CurvelogFilter</code> (not supported yet)</td>
+</tr>
+<tr>
+<td><code>history</code></td>
+<td>Get historical data</td>
+<td><code>HistoryFilter</code> (not supported yet)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-4-3-how-viss-is-involved-in-this-tutorial">3-4-3. How VISS is involved in this tutorial</h3>
+<p>In this tutorial—especially in application development using the Yoriito Signal API—developers will rarely need to construct or parse VISS messages directly, because the Yoriito Signal API abstracts away the details of VISS.</p>
+<p>However, understanding the following points will be helpful:</p>
+<ul>
+<li>Behind the Yoriito Signal API and DataBroker Producer API, communication is always performed via VISS.  </li>
+<li>Thanks to the VSS / VISS design, APIs can be made independent of vehicle models and platforms.  </li>
+<li>When troubleshooting or performing advanced customization, understanding VISS-level behavior may become necessary.  </li>
+</ul>
+<p>For a deeper understanding of VISS, refer to the COVESA official documents and the Yoriito VISS schema definitions.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../../02_system_scope_versioning/02_system_scope_versioning/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 2. System Configuration/Scope/Versioning">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                2. System Configuration/Scope/Versioning
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../04_environment_setup/04_environment_setup/" class="md-footer__link md-footer__link--next" aria-label="Next: 4. Setting Up the Application Development Environment">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                4. Setting Up the Application Development Environment
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright 2026 JASPAR
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "content.code.copy", "search.suggest", "search.highlight", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  <script src="../../../assets/javascripts/custom.js"></script>
+
+  </body>
+</html>

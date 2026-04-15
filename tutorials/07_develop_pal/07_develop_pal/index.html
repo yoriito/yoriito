@@ -1,0 +1,1517 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../06_control_sim_vehicle/06_control_sim_vehicle/">
+      
+      
+        <link rel="next" href="../../08_glossary/glossary/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>7. Developing a custom PAL to connect CAN and Kura - Yoriito Project</title>
+      
+    
+    
+  
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+  <link rel="stylesheet" href="../../../assets/stylesheets/custom.css">
+
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Yoriito Project" class="md-header__button md-logo" aria-label="Yoriito Project" data-md-component="logo">
+      
+  <img src="../../../assets/yoriito.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Yoriito Project
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              7. Developing a custom PAL to connect CAN and Kura
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../releasenotes/" class="md-tabs__link">
+          
+  
+  
+  Release Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../apirefguide/" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../design/" class="md-tabs__link">
+          
+  
+  
+  Design Documentation
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Yoriito Project" class="md-nav__button md-logo" aria-label="Yoriito Project" data-md-component="logo">
+      
+  <img src="../../../assets/yoriito.png" alt="logo">
+
+    </a>
+    Yoriito Project
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release Notes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Release Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../releasenotes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Table of Contents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Table of Contents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part1 Theory
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part1 Theory
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01_yoriito_vehicle_api_overview/01_yoriito_vehicle_api_overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. What is the Yoriito Vehicle API?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02_system_scope_versioning/02_system_scope_versioning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. System Configuration/Scope/Versioning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03_VSS_VISS/03_vss_viss/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Introduction to VSS/VISS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part2 Practice
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part2 Practice
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04_environment_setup/04_environment_setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Setting Up the Application Development Environment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05_app_tutorial/05_app_tutorial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Building Your First Yoriito Vehicle API Application
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06_control_sim_vehicle/06_control_sim_vehicle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Controlling the Simulator Vehicle
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Developing a custom PAL to connect CAN and Kura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Appendix
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../08_glossary/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../apirefguide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Table of Contents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Documentation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Design Documentation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Table of Contents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="part2-practice">Part2 Practice</h1>
+<h2 id="7-developing-a-custom-pal-to-connect-can-and-kura">7. Developing a custom PAL to connect CAN and Kura 🚗</h2>
+<h3 id="7-1-introduction">7-1. Introduction</h3>
+<p>This page explains how readers can develop their own PAL to connect CAN and Kura. This page assumes the following knowledge:  </p>
+<ul>
+<li><a href="../../03_VSS_VISS/03_vss_viss/">VSS/VISS</a></li>
+</ul>
+<h3 id="7-2-set-up-the-development-environment">7-2. Set Up the Development Environment</h3>
+<h4 id="7-2-1-clone-the-yoriito-tutorial-repository">7-2-1. Clone the yoriito-tutorial repository</h4>
+<p>This tutorial uses sample <code>PAL</code> called <code>pocket-pal</code>. <br />
+<code>yoriito-tutorial</code> repository contains <code>pocket-pal</code>, so at first, please clone <code>yoriito-tutorial</code>. <code>pocket-pal</code> is located in the pocket-pal directory.  </p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/yoriito/yoriito-tutorial.git
+</code></pre></div>
+<p><code>pocket-pal</code> uses vcan device, so you need a vcan (Virtual CAN interface), so create it as follows:  </p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>bash<span class="w"> </span>yoriito-tutorial/pocket-pal/script/setup_vcan.sh
+</code></pre></div>
+<p>This script performs the following operations, so you can also execute them manually:  </p>
+<div class="highlight"><pre><span></span><code><span class="c1"># load vcan module</span>
+$<span class="w"> </span>sudo<span class="w"> </span>modprobe<span class="w"> </span>vcan
+<span class="c1"># create virtual CAN device (vcan0) as a network device</span>
+$<span class="w"> </span>sudo<span class="w"> </span>ip<span class="w"> </span>link<span class="w"> </span>add<span class="w"> </span>dev<span class="w"> </span>vcan0<span class="w"> </span><span class="nb">type</span><span class="w"> </span>vcan
+<span class="c1"># set status to `UP`</span>
+$<span class="w"> </span>sudo<span class="w"> </span>ip<span class="w"> </span>link<span class="w"> </span><span class="nb">set</span><span class="w"> </span>up<span class="w"> </span>vcan0
+</code></pre></div>
+<h4 id="7-2-2-start-the-development-docker-container">7-2-2. Start the development Docker container</h4>
+<p><code>yoriito-tutorial</code> provides a development Docker container for yoriito project. <br />
+From the root of <code>yoriito-tutorial</code> repository, launch VS Code and start the development Docker container for the pocket-pal directory by following the steps described there.  </p>
+<video controls width="800">
+  <source src="../assets/dev-container.mp4" type="video/mp4">
+</video>
+
+<p>When you run shell commands in the following location in VS Code, they will be executed inside the development Docker container.  </p>
+<p><img alt="" src="../assets/devcontainer-shell.svg" /></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>⚠️ Unless otherwise noted, the following assumptions apply to subsequent code blocks:  </p>
+<ul>
+<li>Commands are executed inside this development container.  </li>
+<li>The current directory is /work/pocket-pal in the cloned repository.  </li>
+</ul>
+</div>
+<h3 id="7-3-develop-a-pal">7-3. Develop a PAL</h3>
+<h4 id="7-3-1-design-of-pocket-pal-cc">7-3-1. Design of pocket-pal-cc</h4>
+<p>Before staring your custom PAL, let's take a look at the design of <code>pocket-pal-cc</code>. pocket-pal-cc consists of three C++ source files and CMakeLists.txt as follows.  </p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>tree<span class="w"> </span>-L<span class="w"> </span><span class="m">1</span><span class="w"> </span>pocket-pal-cc<span class="w"> </span>
+pocket-pal-cc
+├──<span class="w"> </span>build
+├──<span class="w"> </span>can_broker.h
+├──<span class="w"> </span>CMakeLists.txt
+├──<span class="w"> </span>main.cpp
+└──<span class="w"> </span>vss_broker.h
+<span class="m">2</span><span class="w"> </span>directories,<span class="w"> </span><span class="m">4</span><span class="w"> </span>files
+</code></pre></div>
+<p>Their responsibilities are as follows.  </p>
+<table>
+<thead>
+<tr>
+<th><strong>file</strong></th>
+<th><strong>responsibility</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>main.cpp</code></td>
+<td>- Implements the entry point of pocket-pal <br> - Receives CAN from vcan, converts it to VSS, and writes it to Kura<br> - Receives VSS from Kura, converts it to CAN, and writes it to vcan<br> - Manages the threads that execute the above functions</td>
+</tr>
+<tr>
+<td><code>can_broker.h</code></td>
+<td>- Provides write functions to vcan<br> - Provides read functions from vcan</td>
+</tr>
+<tr>
+<td><code>vss_broker.h</code></td>
+<td>- Provides write functions to Kura<br> - Provides subscribe functions for specific VSS data in Kura</td>
+</tr>
+<tr>
+<td><code>CMakeLists.txt</code></td>
+<td>- Describes CMake configuration for pocket-pal-cc<br> - Adds header search paths<br> - Links libraries</td>
+</tr>
+<tr>
+<td><code>build</code></td>
+<td>- Working directory for building</td>
+</tr>
+</tbody>
+</table>
+<h4 id="7-3-2-build-and-run-pocket-pal-cc">7-3-2. Build and run pocket-pal-cc</h4>
+<p>Now you understand how pocket-pal-cc works, let's build and run it. You can build and run it with the following steps:  </p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Build</span>
+$<span class="w"> </span>mkdir<span class="w"> </span>pocket-pal-cc/build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>pocket-pal-cc/build
+$<span class="w"> </span>cmake<span class="w"> </span>..
+$<span class="w"> </span>make
+<span class="c1"># Run</span>
+$<span class="w"> </span>./pocket-pal
+</code></pre></div>
+<p>This sample pal runs in a loop, reading CAN frames from vcan, converting them to VSS, and writing them to Kura. For more details, see the following diagram.  </p>
+<p><img alt="" src="../assets/pocket-pal-sequence.svg" /></p>
+<h4 id="7-3-3-modify-pocket-pal-cc">7-3-3. Modify pocket-pal-cc</h4>
+<h5 id="modify-can-vss-conversion">Modify CAN → VSS conversion</h5>
+<p>Here we modify the implementation that receives a CAN signal from vcan, converts it to VSS, and writes it to Kura. This process is implemented in the <a href="https://github.com/yoriito/yoriito-tutorial/blob/main/pocket-pal/pocket-pal-cc/main.cpp#L36">main.cpp(link)</a>.  </p>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">on_can</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CANBroker</span><span class="o">&gt;</span><span class="w"> </span><span class="n">can_broker</span><span class="p">){</span>
+<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="n">running</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">frame</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">can_broker</span><span class="p">.</span><span class="n">get</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">read</span><span class="p">();</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">frame</span><span class="p">.</span><span class="n">has_value</span><span class="p">()){</span>
+<span class="w">            </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">valid_frame</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">frame</span><span class="p">.</span><span class="n">value</span><span class="p">();</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;[CAN][RECV]&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;id: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">valid_frame</span><span class="p">.</span><span class="n">can_id</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;, data: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">valid_frame</span><span class="p">.</span><span class="n">data</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">        </span><span class="n">VSSBroker</span><span class="o">::</span><span class="n">write</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">VEHICLE_SPEED</span><span class="p">,</span><span class="w"> </span><span class="mf">100.f</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;[VSS][SEND]&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;path: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">VEHICLE_SPEED</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;, payload: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mf">100.0f</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>As shown above, the data received from vcan is stored in the variable <code>valid_frame</code>. The code writes the value 100.f to Kura with the path VEHICLE_SPEED (=<code>Vehicle.Speed</code>).  </p>
+<p>For example, if you want to modify the implementation so that when the received CAN ID is 0x100, the first byte of the CAN payload is treated as vehicle speed and written to Kura, it will look like this.  </p>
+<div class="highlight"><pre><span></span><code>void on_can(std::shared_ptr&lt;CANBroker&gt; can_broker){
+<span class="w"> </span>   while(running) {
+<span class="w"> </span>       auto frame = can_broker.get()-&gt;read();
+<span class="w"> </span>       if (!frame.has_value()){
+<span class="w"> </span>           continue;
+<span class="w"> </span>       }
+<span class="w"> </span>       auto valid_frame = frame.value();
+<span class="w"> </span>       std::cout &lt;&lt; &quot;[CAN][RECV]&quot; &lt;&lt; &quot;id: &quot; &lt;&lt; valid_frame.can_id &lt;&lt; &quot;, data: &quot; &lt;&lt; valid_frame.data &lt;&lt; std::endl;
+
+<span class="gd">-       VSSBroker::write&lt;double&gt;(VEHICLE_SPEED, 100.f, true, true);</span>
+<span class="gd">-       std::cout &lt;&lt; &quot;[VSS][SEND]&quot; &lt;&lt; &quot;path: &quot; &lt;&lt; VEHICLE_SPEED &lt;&lt; &quot;, payload: &quot; &lt;&lt; 100.0f &lt;&lt; std::endl;        </span>
+<span class="gi">+       if (valid_frame.can_id == 0x100) {</span>
+<span class="gi">+           auto speed = static_cast&lt;double&gt;(valid_frame.data[0]);</span>
+<span class="gi">+           VSSBroker::write&lt;double&gt;(VEHICLE_SPEED, speed, true, true);</span>
+<span class="gi">+           std::cout &lt;&lt; &quot;[VSS][SEND]&quot; &lt;&lt; &quot;path: &quot; &lt;&lt; VEHICLE_SPEED &lt;&lt; &quot;, payload: &quot; &lt;&lt; speed &lt;&lt; std::endl;</span>
+<span class="gi">+       }</span>
+<span class="w"> </span>   }
+}
+</code></pre></div>
+<p>When you actually develop a <code>PAL</code>, you will update VSS data in Kura based on the received CAN frame in this way.  </p>
+<h5 id="modify-vss-can-conversion">Modify VSS → CAN conversion</h5>
+<p>Here we modify the implementation that receives VSS from Kura, converts it to CAN, and writes it to vcan. This process is implemented in the <a href="https://github.com/yoriito/yoriito-tutorial/blob/main/pocket-pal/pocket-pal-cc/main.cpp#L50">main.cpp(link)</a>.  </p>
+<p>As shown in above link, the data received from Kura is stored in the variable <code>data_point</code>. The code writes a hard-coded payload to vcan with CAN ID 256.  </p>
+<p>For example, if you want to modify the implementation so that when the received VSS path is <code>Vehicle.Speed</code>, you send a CAN frame with ID 255 to vcan, <br />
+using the received vehicle speed as the first byte of the payload, it will look like this.  </p>
+<div class="highlight"><pre><span></span><code>void on_vss(std::shared_ptr&lt;CANBroker&gt; can_broker){
+...
+<span class="gd">-           // TODO: users need to build any can frame from data_point</span>
+<span class="gd">-           can_broker.get()-&gt;write(256, {0x27, 0x10, 0x1F, 0x40, 0x00, 0x00, 0x00, 0x00});</span>
+<span class="gd">-           std::cout &lt;&lt; &quot;[CAN][SEND]&quot; &lt;&lt; &quot;id: &quot; &lt;&lt; 256 &lt;&lt; &quot;, payload&quot; &lt;&lt; &quot;0x27, 0x10, 0x1F, 0x40, 0x00, 0x00, 0x00, 0x00&quot; &lt;&lt; std::endl;</span>
+<span class="gi">+           if (path == &quot;Vehicle.Speed&quot;) {</span>
+<span class="gi">+               auto speed = static_cast&lt;char&gt;(value);</span>
+<span class="gi">+               can_broker.get()-&gt;write(255, {speed, 0x10, 0x1F, 0x40, 0x00, 0x00, 0x00, 0x00});</span>
+<span class="gi">+               std::cout &lt;&lt; &quot;[CAN][SEND]&quot; &lt;&lt; &quot;id: &quot; &lt;&lt; 255 &lt;&lt; &quot;, payload&quot; &lt;&lt; speed &lt;&lt; &quot;, 0x10, 0x1F, 0x40, 0x00, 0x00, 0x00, 0x00&quot; &lt;&lt; std::endl;</span>
+<span class="gi">+           }</span>
+<span class="w"> </span>       }
+<span class="w"> </span>   }
+}
+</code></pre></div>
+<p>When you actually develop a <code>PAL</code>, you will send CAN frames to vcan based on the received VSS data in this way.  </p>
+<h3 id="7-4-verify-the-behavior">7-4. Verify the Behavior</h3>
+<p>This section explains how to verify the behavior by writing CAN data to pocket-pal-cc or writing VSS data and checking the result.  </p>
+<h4 id="7-4-1-connect-vshot">7-4-1. Connect vshot</h4>
+<p>To verify the behavior of pocket-pal-cc, you need an application that reads and writes VSS to Kura. For this purpose, a simple CLI command (vshot) is provided.  </p>
+<ul>
+<li><a href="https://github.com/yoriito/kura/tree/main/client/vshot">https://github.com/yoriito/kura/tree/main/client/vshot</a></li>
+</ul>
+<p>You can use this CLI with the following commands.  </p>
+<div class="highlight"><pre><span></span><code><span class="c1"># build</span>
+$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/yoriito/kura.git
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>kura/client/vshot
+$<span class="w"> </span>make<span class="w"> </span>build
+$<span class="w"> </span>make<span class="w"> </span>install
+<span class="c1"># run</span>
+$<span class="w"> </span>vshot<span class="w"> </span>tui<span class="w">                           </span><span class="c1"># Use TUI mode</span>
+$<span class="w"> </span>vshot<span class="w"> </span>-i<span class="w">                            </span><span class="c1"># Use interactive mode</span>
+$<span class="w"> </span>vshot<span class="w"> </span>get-current<span class="w"> </span>Vehicle.Speed<span class="w">     </span><span class="c1"># Get the current value of Vehicle.Speed</span>
+$<span class="w"> </span>vshot<span class="w"> </span>set-current<span class="w"> </span>Vehicle.Speed<span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="c1"># Set the current value of Vehicle.Speed to 100</span>
+</code></pre></div>
+<p>For example, when you run it as a TUI, the following screen is displayed.  </p>
+<p><img alt="7-4-1-1" src="../assets/7-4-1-1.png" /></p>
+<p>When you press <code>Go to Headless Mode</code>, the following screen is displayed.  </p>
+<p><img alt="7-4-1-2" src="../assets/7-4-1-2.png" /></p>
+<p>To write VSS to Kura, <code>set</code> the path and value in the <code>set_request</code> field and press the set button, as shown in the video.  </p>
+<video controls width="800">
+  <source src="../assets/tui.mp4" type="video/mp4">
+</video>
+
+<p><a id="Write a CAN frame to vcan and verify that it is written to Kura as VSS"></a></p>
+<h4 id="7-4-2-write-a-can-frame-to-vcan-and-verify-that-it-is-written-to-kura-as-vss">7-4-2. Write a CAN frame to vcan and verify that it is written to Kura as VSS</h4>
+<p>First, run pocket-pal-cc inside the development Docker container:  </p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>./pocket-pal-cc/build/pocket-pal
+</code></pre></div>
+<p>Then, follow these steps.  </p>
+<p><img alt="sequence" src="../assets/sequence.svg" /></p>
+<p>The detailed steps are as follows.  </p>
+<ol>
+<li>Send a CAN frame<br />
+  Run the following command in a shell. You can run this either inside the development Docker container or on the host OS.<br />
+  <div class="highlight"><pre><span></span><code>$<span class="w"> </span>cansend<span class="w"> </span>vcan0<span class="w"> </span><span class="m">123</span><span class="c1">#1122334455667788</span>
+</code></pre></div></li>
+<li>Send a VSS signal<br />
+  After step 1, PAL converts the received data to a VSS signal and notifies Kura.  </li>
+<li>Read the VSS signal<br />
+  Use the TUI to get the value. If you have not modified pocket-pal, the path to get is <code>Vehicle.Speed</code>.  </li>
+<li>Check the returned VSS signal<br />
+  The TUI returns the value of <code>Vehicle.Speed</code>. If you have not modified pocket-pal, you should get 100.  </li>
+</ol>
+<h4 id="7-4-3-write-vss-to-kura-and-verify-that-a-can-frame-is-written-to-vcan">7-4-3. Write VSS to Kura and verify that a CAN frame is written to vcan</h4>
+<p>Refer to <a href="#7-4-2-write-a-can-frame-to-vcan-and-verify-that-it-is-written-to-kura-as-vss">Write a CAN frame to vcan and verify that it is written to Kura as VSS</a> and write VSS data to Kura from the TUI.  </p>
+<p>You can monitor vcan with the following command (this can also be run either inside the development Docker container or on the host OS).</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>candump<span class="w"> </span>vcan0
+</code></pre></div>
+<h3 id="7-5-troubleshooting">7-5. Troubleshooting</h3>
+<h4 id="7-5-1-no-such-device-error-occurs-when-running-pocket-pal-cc">7-5-1. No such device error occurs when running pocket-pal-cc</h4>
+<ul>
+<li>Symptom  <br />
+    <div class="highlight"><pre><span></span><code>$<span class="w"> </span>./pocket-pal-cc/build/pocket-pal
+ioctl<span class="w"> </span>SIOCGIFINDEX<span class="w"> </span>failed,<span class="w"> </span><span class="nv">errno</span><span class="o">=</span><span class="m">19</span><span class="w"> </span><span class="o">(</span>No<span class="w"> </span>such<span class="w"> </span>device<span class="o">)</span>
+terminate<span class="w"> </span>called<span class="w"> </span>after<span class="w"> </span>throwing<span class="w"> </span>an<span class="w"> </span>instance<span class="w"> </span>of<span class="w"> </span><span class="s1">&#39;std::runtime_error&#39;</span>
+what<span class="o">()</span>:<span class="w">  </span>Failed<span class="w"> </span>to<span class="w"> </span>get<span class="w"> </span>interface<span class="w"> </span>index
+Aborted<span class="w"> </span><span class="o">(</span>core<span class="w"> </span>dumped<span class="o">)</span>
+</code></pre></div></li>
+<li>Cause  <br />
+    The vcan device has not been created.  </li>
+<li>Countermeasure<br />
+    Create vcan by <a href="#7-2-2-create-vcan">link</a>.  </li>
+</ul>
+<h4 id="7-5-2-cannot-install-required-pip-packages-for-the-tui">7-5-2. Cannot install required pip packages for the TUI</h4>
+<ul>
+<li>Symptom  <br />
+    <div class="highlight"><pre><span></span><code>$<span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>textual<span class="w"> </span>grpcio<span class="w"> </span>protobuf<span class="w"> </span>textual_autocomplete
+error:<span class="w"> </span>externally-managed-environment
+×<span class="w"> </span>This<span class="w"> </span>environment<span class="w"> </span>is<span class="w"> </span>externally<span class="w"> </span>managed
+╰─&gt;<span class="w"> </span>To<span class="w"> </span>install<span class="w"> </span>Python<span class="w"> </span>packages<span class="w"> </span>system-wide,<span class="w"> </span>try<span class="w"> </span>apt<span class="w"> </span>install
+<span class="w">    </span>python3-xyz,<span class="w"> </span>where<span class="w"> </span>xyz<span class="w"> </span>is<span class="w"> </span>the<span class="w"> </span>package<span class="w"> </span>you<span class="w"> </span>are<span class="w"> </span>trying<span class="w"> </span>to
+<span class="w">    </span>install.
+<span class="w">    </span>If<span class="w"> </span>you<span class="w"> </span>wish<span class="w"> </span>to<span class="w"> </span>install<span class="w"> </span>a<span class="w"> </span>non-Debian-packaged<span class="w"> </span>Python<span class="w"> </span>package,
+<span class="w">    </span>create<span class="w"> </span>a<span class="w"> </span>virtual<span class="w"> </span>environment<span class="w"> </span>using<span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>path/to/venv.
+<span class="w">    </span>Then<span class="w"> </span>use<span class="w"> </span>path/to/venv/bin/python<span class="w"> </span>and<span class="w"> </span>path/to/venv/bin/pip.<span class="w"> </span>Make
+<span class="w">    </span>sure<span class="w"> </span>you<span class="w"> </span>have<span class="w"> </span>pypy3-venv<span class="w"> </span>installed.
+<span class="w">    </span>If<span class="w"> </span>you<span class="w"> </span>wish<span class="w"> </span>to<span class="w"> </span>install<span class="w"> </span>a<span class="w"> </span>non-Kali-packaged<span class="w"> </span>Python<span class="w"> </span>application,
+<span class="w">    </span>it<span class="w"> </span>may<span class="w"> </span>be<span class="w"> </span>easiest<span class="w"> </span>to<span class="w"> </span>use<span class="w"> </span>pipx<span class="w"> </span>install<span class="w"> </span>xyz,<span class="w"> </span>which<span class="w"> </span>will<span class="w"> </span>manage<span class="w"> </span>a
+<span class="w">    </span>virtual<span class="w"> </span>environment<span class="w"> </span><span class="k">for</span><span class="w"> </span>you.<span class="w"> </span>Make<span class="w"> </span>sure<span class="w"> </span>you<span class="w"> </span>have<span class="w"> </span>pipx<span class="w"> </span>installed.
+<span class="w">    </span>For<span class="w"> </span>more<span class="w"> </span>information,<span class="w"> </span>refer<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>following:
+<span class="w">    </span>*<span class="w"> </span>https://www.kali.org/docs/general-use/python3-external-packages/
+<span class="w">    </span>*<span class="w"> </span>/usr/share/doc/python3.13/README.venv
+note:<span class="w"> </span>If<span class="w"> </span>you<span class="w"> </span>believe<span class="w"> </span>this<span class="w"> </span>is<span class="w"> </span>a<span class="w"> </span>mistake,<span class="w"> </span>please<span class="w"> </span>contact<span class="w"> </span>your<span class="w"> </span>Python<span class="w"> </span>installation<span class="w"> </span>or<span class="w"> </span>OS<span class="w"> </span>distribution<span class="w"> </span>provider.<span class="w"> </span>You<span class="w"> </span>can<span class="w"> </span>override<span class="w"> </span>this,<span class="w"> </span>at<span class="w"> </span>the<span class="w"> </span>risk<span class="w"> </span>of<span class="w"> </span>breaking<span class="w"> </span>your<span class="w"> </span>Python<span class="w"> </span>installation<span class="w"> </span>or<span class="w"> </span>OS,<span class="w"> </span>by<span class="w"> </span>passing<span class="w"> </span>--break-system-packages.
+hint:<span class="w"> </span>See<span class="w"> </span>PEP<span class="w"> </span><span class="m">668</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>detailed<span class="w"> </span>specification.
+</code></pre></div></li>
+<li>Cause<br />
+    From Python 3.12 onward, installing packages with pip is assumed to be done in a venv environment.  </li>
+<li>
+<p>Countermeasure<br />
+    Use a venv as follows.</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.
+$<span class="w"> </span><span class="nb">source</span><span class="w"> </span>bin/activate
+</code></pre></div>
+<p>Alternatively, if you are fine with installing packages into the global system, you can avoid the problem with the following command.</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>textual<span class="w"> </span>grpcio<span class="w"> </span>protobuf<span class="w"> </span>textual_autocomplete<span class="w"> </span>--break-system-packages
+</code></pre></div>
+</li>
+</ul>
+<h4 id="7-5-3-when-starting-the-tui-viss-serverlocalhost50052-is-not-running-is-displayed">7-5-3. When starting the TUI, VISS server(localhost:50052) is not running. is displayed</h4>
+<ul>
+<li>Symptom  <br />
+    <div class="highlight"><pre><span></span><code>$<span class="w"> </span>./main.py<span class="w"> </span>
+VISS<span class="w"> </span>server<span class="o">(</span>localhost:50052<span class="o">)</span><span class="w"> </span>is<span class="w"> </span>not<span class="w"> </span>running.
+</code></pre></div></li>
+<li>Cause<br />
+    The development Docker container in the pocket-pal repository is not running.  </li>
+<li>Countermeasure  <br />
+    Start the development Docker container by referring to <a href="#7-2-3-start-the-development-docker-container">link</a>  </li>
+</ul>
+<h4 id="7-5-4-cannot-use-vcan-on-wsl2">7-5-4. Cannot use vcan on WSL2</h4>
+<ul>
+<li>Symptom<br />
+    <div class="highlight"><pre><span></span><code>$<span class="w"> </span>sudo<span class="w"> </span>modprobe<span class="w"> </span>vcan
+modprobe:<span class="w"> </span>FATAL:<span class="w"> </span>Module<span class="w"> </span>vcan<span class="w"> </span>not<span class="w"> </span>found<span class="w"> </span><span class="k">in</span><span class="w"> </span>directory<span class="w"> </span>/lib/modules/....
+</code></pre></div></li>
+<li>Cause<br />
+    The standard WSL2 kernel does not include the vcan module.  </li>
+<li>Countermeasure <br />
+    Resolve the issue by referring to the following information.<br />
+    Note that the location of configuration items may have changed.<br />
+    Within this project, the following procedure has been confirmed to work.<br />
+    <div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>--depth<span class="w"> </span><span class="m">1</span><span class="w"> </span>-b<span class="w"> </span>linux-msft-wsl-6.6.y<span class="w"> </span>https://github.com/microsoft/WSL2-Linux-Kernel.git
+<span class="nb">cd</span><span class="w"> </span>~/WSL2-Linux-Kernel
+make<span class="w"> </span>mrproper
+zcat<span class="w"> </span>/proc/config.gz<span class="w"> </span>&gt;<span class="w"> </span>.config
+<span class="nb">printf</span><span class="w"> </span><span class="s2">&quot;CONFIG_CAN=m\nCONFIG_CAN_RAW=m\nCONFIG_CAN_BCM=m\nCONFIG_CAN_GW=m\nCONFIG_CAN_DEV=m\nCONFIG_CAN_VCAN=m\n&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>.config
+make<span class="w"> </span>olddefconfig
+make<span class="w"> </span>modules<span class="w"> </span>-j<span class="k">$(</span>nproc<span class="k">)</span>
+sudo<span class="w"> </span>make<span class="w"> </span>modules_install
+</code></pre></div></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../../06_control_sim_vehicle/06_control_sim_vehicle/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 6. Controlling the Simulator Vehicle">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                6. Controlling the Simulator Vehicle
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../08_glossary/glossary/" class="md-footer__link md-footer__link--next" aria-label="Next: 8. Glossary">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                8. Glossary
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright 2026 JASPAR
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "content.code.copy", "search.suggest", "search.highlight", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  <script src="../../../assets/javascripts/custom.js"></script>
+
+  </body>
+</html>
