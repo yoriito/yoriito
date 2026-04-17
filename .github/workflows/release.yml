@@ -1,0 +1,92 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2026 JASPAR
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# .github/workflows/release.yml
+# Simple release workflow using phase: all (default)
+#
+# Flow:
+#   Analyze commits -> Generate CHANGELOG -> Commit -> Tag -> Push -> GitHub Release
+
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      initial-development:
+        description: 'Create an initial release'
+        required: false
+        default: true
+        type: boolean
+      prerelease:
+        description: 'Create a prerelease'
+        required: false
+        default: true
+        type: boolean
+      prerelease-suffix:
+        description: 'Suffix for the prerelease version'
+        required: false
+        default: 'rc'
+        type: string
+      tag-prefix:
+        description: 'Prefix for the release tag'
+        required: false
+        default: 'v'
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Generate Github App Token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.RELEASE_BOT_ID }}
+          private-key: ${{ secrets.RELEASE_BOT_KEY }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Create Release
+        id: release
+        uses: yoriito/actions/semantic-release@main
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          initial-development: ${{ github.event.inputs.initial-development || vars.INITIAL_DEVELOPMENT || true }}
+          prerelease: ${{ github.event.inputs.prerelease || vars.PRERELEASE || true }}
+          prerelease-suffix: ${{ github.event.inputs.prerelease-suffix || vars.PRERELEASE_SUFFIX || 'rc' }}
+          tag-prefix: ${{ github.event.inputs.tag-prefix || vars.TAG_PREFIX || 'v' }}
+
+      - name: Release Summary
+        if: steps.release.outputs.release-created == 'true'
+        run: |
+          echo "## 🎉 Release Created" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version:** ${{ steps.release.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Tag:** ${{ steps.release.outputs.tag-name }}" >> $GITHUB_STEP_SUMMARY
