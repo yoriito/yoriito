@@ -1,0 +1,1639 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../../01_yoriito_vehicle_api_overview/01_yoriito_vehicle_api_overview/">
+      
+      
+        <link rel="next" href="../../03_VSS_VISS/03_vss_viss/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/yoriito.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>2. System Configuration/Scope/Versioning - Yoriito Project</title>
+      
+    
+    
+  
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+  <link rel="stylesheet" href="../../../assets/stylesheets/custom.css">
+
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Yoriito Project" class="md-header__button md-logo" aria-label="Yoriito Project" data-md-component="logo">
+      
+  <img src="../../../assets/yoriito.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Yoriito Project
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2. System Configuration/Scope/Versioning
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../releasenotes/" class="md-tabs__link">
+          
+  
+  
+  Release Notes
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../apirefguide/" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../design/" class="md-tabs__link">
+          
+  
+  
+  Design Documentation
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Yoriito Project" class="md-nav__button md-logo" aria-label="Yoriito Project" data-md-component="logo">
+      
+  <img src="../../../assets/yoriito.png" alt="logo">
+
+    </a>
+    Yoriito Project
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release Notes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Release Notes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../releasenotes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Table of Contents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Table of Contents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part1 Theory
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part1 Theory
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01_yoriito_vehicle_api_overview/01_yoriito_vehicle_api_overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. What is the Yoriito Vehicle API?
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. System Configuration/Scope/Versioning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03_VSS_VISS/03_vss_viss/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Introduction to VSS/VISS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part2 Practice
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part2 Practice
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04_environment_setup/04_environment_setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Setting Up the Application Development Environment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05_app_tutorial/05_app_tutorial/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Building Your First Yoriito Vehicle API Application
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06_control_sim_vehicle/06_control_sim_vehicle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Controlling the Simulator Vehicle
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../07_develop_pal/07_develop_pal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. Developing a custom PAL to connect CAN and Kura
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Appendix
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../08_glossary/glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Glossary
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../apirefguide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Table of Contents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Documentation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Design Documentation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Table of Contents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="part1-theory">Part1 Theory</h1>
+<h2 id="2-system-configurationscopeversioning">2. System Configuration/Scope/Versioning 📱🚗</h2>
+<h3 id="2-1-introduction">2-1. Introduction</h3>
+<p>In this chapter, we explain the overall structure of the reference system that integrates the Vehicle API.</p>
+<p>First, we clarify the scope covered by the Yoriito Vehicle API. Then, we describe an overview of the system architecture and the role of each component.</p>
+<p>By understanding the roles and relationships of each component, it becomes easier to see where the implementations and code examples introduced in later chapters fit into the overall system.  </p>
+<p>After that, we explain Capability, Availability, and error codes, which are important concepts when defining the behavior of the Vehicle API.  </p>
+<p>We also describe the versioning of the overall Yoriito Vehicle API and each component, so that you can easily understand the future evolution and release plans of the Yoriito Vehicle API.</p>
+<h3 id="2-2-scope">2-2. Scope</h3>
+<p><img alt="Yoriito Vehicle API Scope Definition" src="../assets/Yoriito_ScopeOverview.drawio.svg" /></p>
+<p align="center"><em>Figure: Yoriito Vehicle API Scope Definition</em></p>
+
+<p>The above diagram shows the scope that the Yoriito Vehicle API provides and supports, and the scope that each OEM or supplier implements and operates.<br />
+The Yoriito Vehicle API provides interface definitions that form the boundaries between the layers of the system, data definitions used by each layer, and their implementations.  </p>
+<p>The following interface definitions, data definitions, and components are developed and provided as part of the Yoriito Vehicle API:  </p>
+<div class="admonition info">
+<p class="admonition-title">Legend</p>
+<ul>
+<li>Interface definitions / data definitions  <ul>
+<li>Software components</li>
+</ul>
+</li>
+</ul>
+</div>
+<ul>
+<li><strong>Yoriito Access API</strong>: A high-level API definition that focuses on usability from the application point of view, such as simplifying operations and data retrieval per use case.  <ul>
+<li><strong>Yoriito Access Library</strong>: A shared library that implements the above.</li>
+</ul>
+</li>
+<li><strong>Yoriito Signal API</strong>: A low-level API definition for applications that provides access to vehicle signals (sensor values and actuator operations).  <ul>
+<li><strong>Yoriito Signal Library</strong>: A shared library that implements the above.</li>
+</ul>
+</li>
+<li><strong>DataBroker Consumer/Producer API</strong>: An API definition for Vehicle API layer and PAL that provides access to the communication backend. This API definition is directly used by the Yoriito Signal API and is therefore specified by the Yoriito Signal API.  <ul>
+<li><strong>Yoriito VISS Consumer Library</strong>: An API implementation for applications that provides access to the Yoriito VISS Server. As a reference implementation, a Kura client implementation is provided. This is also the implementation of Yoriito VISS described later.  </li>
+<li><strong>Yoriito VISS Producer Library</strong>: An API implementation for PAL that provides access to the Yoriito VISS Server. As a reference implementation, a Kura client implementation is provided. This is also the implementation of Yoriito VISS described later.</li>
+</ul>
+</li>
+<li><strong>Yoriito VISS</strong>: A complete set of protocol definitions (VISS message schemas) for accessing vehicle signals, extended and refined for the Yoriito Vehicle API.  <ul>
+<li><strong>Yoriito VISS Server</strong>: A centralized server and data broker that manages the VSS data tree provided by Yoriito. As the reference implementation, Kura is provided.  </li>
+<li><strong>Yoriito VISS Consumer Library, Yoriito VISS Producer Library</strong>: As above.</li>
+</ul>
+</li>
+<li><strong>Yoriito VSS</strong>: A complete set of vehicle signal (VSS) definitions extended and refined for the Yoriito Vehicle API. OEMs/suppliers create their own vehicle-specific definitions based on this VSS definition.  <ul>
+<li>There is no dedicated software component that is a direct implementation. However, as data definitions, Yoriito VISS and the Yoriito Signal API use them. PAL software must reference Yoriito VSS to convert the data structures of the vehicle platform into data structures compliant with Yoriito VSS.</li>
+</ul>
+</li>
+</ul>
+<p>The Yoriito Signal API and Yoriito Access API are collectively called the <strong>Vehicle API</strong>.<br><br></p>
+<p>The following components are partially supported as part of the Yoriito Vehicle API:</p>
+<ul>
+<li>Toolchain: A complete toolchain to build and run components of the Yoriito Vehicle API. Provided as a reference.  </li>
+<li>Debug &amp; Trace: Dedicated debugging tools are provided for some components.  </li>
+<li>OS Runtime/Container: A complete runtime environment where components of the Yoriito Vehicle API are integrated. Provided as a reference.  </li>
+<li>Simulation: Simulators that work in conjunction with components of the Yoriito Vehicle API. Provided as a reference.<br><br></li>
+</ul>
+<p>The following interface definitions, data definitions, components, and layers are not supported as part of the Yoriito Vehicle API:</p>
+<ul>
+<li>Application: Applications that run using the Vehicle API. Sample implementations are provided, but they are not part of the supported scope.  </li>
+<li>PAL (Platform Abstraction Layer) Software: An abstraction-layer software that absorbs differences in communication methods, ECU configurations, security/diagnostic interfaces, etc., specific to each OEM/vehicle model. Sample implementations are provided, but they are not part of the supported scope.  </li>
+<li>Testing Framework: A Vehicle-API-specific dedicated test framework is not provided. However, unit tests for each component and integration tests across components using general-purpose test frameworks are provided.  </li>
+<li>Automation Framework: CI/CD tools for projects using the Vehicle API are not provided. However, some of the CI/CD implementations used within the Yoriito Vehicle API are disclosed.  </li>
+<li>Definitions and recommended configurations of communication interfaces/data such as CAN signal definitions for vehicle platforms are not provided.  </li>
+<li>Vehicle Platform: The in-vehicle platform itself and ECU-specific implementations are not provided.<br><br></li>
+</ul>
+<p><strong>Summary</strong><br />
+As described above, the Yoriito Vehicle API mainly provides the API layers that abstract access to vehicle signals. The concrete implementation of applications and the connection to vehicle platforms are handled by each company.<br />
+Development environments and simulators that form an ecosystem for development using the Vehicle API are partially provided as reference.</p>
+<h3 id="2-3-system-architecture">2-3. System Architecture</h3>
+<p><img alt="Yoriito_ArchitectureOverview" src="../assets/Yoriito_ArchitectureOverview.drawio.svg" /></p>
+<p align="center"><em>Figure: Yoriito Vehicle API System Architecture</em></p>
+
+<p>The above diagram shows an overview of the system architecture in the Yoriito Vehicle API.<br />
+In the Yoriito Vehicle API, the Yoriito VISS Server sits at the center of the system as a data hub, and applications and PAL exchange vehicle signal information through it.  </p>
+<p>The <strong>Yoriito VISS Server</strong> acts as both a data hub and a data broker. It provides vehicle signal information supplied by PAL to applications, and also notifies PAL of actuator operation requests from applications.  </p>
+<p>The DataBroker Consumer/Producer API and Yoriito VISS Consumer/Producer Library provide access methods to the Yoriito VISS Server.</p>
+<ul>
+<li><strong>DataBroker Consumer API</strong><br />
+  Mainly an API used by the upper layers (application layer) to access the communication backend. It allows retrieval of current sensor values and setting of target values for actuators. This API is specified by the Yoriito Signal API and hides details of the communication backend. In principle, it is used as an internal implementation of the Yoriito Signal API described later, and is generally not used directly from applications.</li>
+<li><strong>DataBroker Producer API</strong><br />
+  Mainly an API used by the lower layers (platform layer) to access the communication backend. It allows updating the current sensor values and retrieving target values for actuators. As with the Consumer API, it is specified by the Yoriito Signal API and hides details of the communication backend.</li>
+<li><strong>Yoriito VISS Consumer Library</strong><br />
+  An implementation of the DataBroker Consumer API that provides the access method to the Yoriito VISS Server as the concrete communication backend. It wraps client-side implementations generated from the Yoriito VISS schema and provides them as an easy-to-use interface.</li>
+<li><strong>Yoriito VISS Producer Library</strong><br />
+  An implementation of the DataBroker Producer API that provides the access method to the Yoriito VISS Server as the concrete communication backend. As with the Consumer Library, it wraps client-side implementations generated from the Yoriito VISS schema and provides them as an easy-to-use interface.</li>
+</ul>
+<p>Because only the PAL implementation directly uses the DataBroker Consumer/Producer API, the DataBroker Consumer/Producer API is sometimes collectively referred to as the <strong>PAL API</strong>.<br />
+Details of these APIs and VSS/VISS are explained in "<a href="../../03_VSS_VISS/03_vss_viss/">3. VSS/VISS</a>".</p>
+<p>The <strong>Yoriito Signal API</strong> further abstracts the DataBroker Consumer API to provide an API that can handle data as vehicle signals. As mentioned above, applications directly use the Yoriito Signal API; the DataBroker Consumer API is generally not used directly from applications.<br />
+The Yoriito Signal API is generated from the complete set of vehicle signal definitions defined by Yoriito VSS and covers all signal definitions supported by the Yoriito Vehicle API.</p>
+<p>The <strong>Yoriito Access API</strong> further abstracts the Yoriito Signal API and provides high-level APIs for vehicle operations and data access tailored to specific use cases. It is designed with an emphasis on ease of use and usability from the application side.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Yoriito Access API is still under consideration and is not included in the current release.</p>
+</div>
+<p><strong>PAL (Platform Abstraction Layer)</strong> is an abstraction layer that sits between the vehicle platform and the Yoriito VISS Server.  </p>
+<p>The "vehicle platform" refers to the hardware/software base specific to each vehicle, including the ECUs, sensors, actuators installed in the vehicle, and the in-vehicle networks (CAN, CAN FD, LIN, SOME/IP, Automotive Ethernet, etc.) that connect them. The composition of the vehicle platform differs depending on the OEM (automaker), vehicle model, and even grade or options of the same model.  </p>
+<p>For example, even for the same "vehicle speed" information, CAN IDs, byte positions, scaling factors, and update cycles can differ from vehicle to vehicle.</p>
+<p>PAL absorbs these differences and communicates with the Yoriito VISS Server via the Yoriito VISS Producer API. The main responsibilities of PAL are as follows:</p>
+<ul>
+<li><strong>Acquisition and conversion of vehicle signals</strong>:<br />
+  PAL acquires signals from the vehicle platform, converts them into the format defined by Yoriito VSS, and supplies them to the Yoriito VISS Server via the Yoriito VISS Producer API.</li>
+<li><strong>Transfer of control requests</strong>:<br />
+  PAL receives target values set by applications via the Yoriito VISS Producer API, converts them into a format that the vehicle platform can understand, and transfers them.</li>
+<li><strong>Management of VSS nodes</strong>:<br />
+  Because the signals supported by the vehicle platform differ by vehicle, the definition of VSS nodes that are available on the Yoriito VISS Server must be created and managed per vehicle. This management is a responsibility of PAL and is done via configuration files and startup options for the Yoriito VISS Server or via functions provided by the Yoriito VISS Producer API.</li>
+</ul>
+<p>By hiding vehicle-platform-specific details, PAL enables application developers to access vehicle signals via the Yoriito Signal API without being aware of differences between vehicle platforms.<br />
+At the same time, PAL developers do not need to know the implementation of applications and can focus on connecting to the vehicle platform.<br />
+This separation improves the portability of applications between different vehicles.<br><br></p>
+<p><strong>Summary</strong><br />
+In this section, we explained the system architecture centered on the Vehicle API. The key points are as follows:</p>
+<ul>
+<li>The architecture of the Yoriito Vehicle API is a centralized structure with the Yoriito VISS Server as its core.  </li>
+<li>The Yoriito Vehicle API provides the DataBroker Consumer/Producer API and their implementations, the Yoriito VISS Consumer/Producer Library, as access methods to the Yoriito VISS Server. In addition, for applications, it provides the Yoriito Signal API, which abstracts these and enables access based on vehicle signals.  </li>
+<li>Application developers use the Yoriito Signal API to obtain vehicle signals from the Yoriito VISS Server and issue actuator operation requests to the Yoriito VISS Server.  </li>
+<li>PAL developers use the DataBroker Producer API (Yoriito VISS Producer Library) to provide vehicle signals to the Yoriito VISS Server and receive actuator operation requests notified by the Yoriito VISS Server.</li>
+</ul>
+<p>For more detailed design information, see <a href="../../../design/architecture_overview/">Yoriito Vehicle API - Architecture Overview</a>.</p>
+<h3 id="2-4-development-and-execution-environment">2-4. Development and Execution Environment</h3>
+<p>In this section, we explain the development environment and runtime environment required to develop and run the Vehicle API, and to follow this tutorial.<br />
+We describe the supported OSs and tools. Specific installation steps and detailed configuration of each tool are not covered here.</p>
+<h4 id="2-4-1-recommended-development-environment">2-4-1. Recommended Development Environment</h4>
+<h5 id="machine-specifications">Machine specifications</h5>
+<p>As a development environment, we recommend the following machine specifications:</p>
+<ul>
+<li>CPU: 4 cores / 8 threads or more (x86_64 architecture)  </li>
+<li>RAM: 16 GB or more  </li>
+</ul>
+<h5 id="os">OS</h5>
+<ul>
+<li>Ubuntu 24.04 LTS  </li>
+</ul>
+<h4 id="2-4-2-supported-runtime-environment">2-4-2. Supported Runtime Environment</h4>
+<p>The Yoriito Vehicle API supports the following runtime environment:</p>
+<ul>
+<li><strong>Yocto Linux on Raspberry Pi 4B</strong>  <ul>
+<li>Architecture: AArch64 (64-bit)  </li>
+<li>Yocto version: scarthgap  </li>
+</ul>
+</li>
+</ul>
+<h4 id="2-4-3-provided-development-environment">2-4-3. Provided Development Environment</h4>
+<p>In addition to the above runtime environment, a <strong>devcontainer</strong> is provided as a development environment.</p>
+<ul>
+<li><strong>devcontainer</strong>  <ul>
+<li>Architecture: x86_64 (64-bit)</li>
+</ul>
+</li>
+</ul>
+<p>The devcontainer includes the SDKs and toolchains required to build and run the Vehicle API in advance and provides a unified development environment for all developers.  </p>
+<p>For concrete procedures to set up the development environment, see <a href="../../04_environment_setup/04_environment_setup/">here</a>.</p>
+<h3 id="2-5-system-behavior">2-5. System Behavior</h3>
+<p>In this section, we explain three important concepts for defining the behavior of the Vehicle API: <strong>Capability</strong>, <strong>Availability</strong>, and <strong>error codes</strong>.<br />
+By clearly defining these concepts as a "contract", application developers can handle differences between vehicle models and grades, and temporary unavailability, in a consistent way.</p>
+<h4 id="2-5-1-capability-and-availability">2-5-1. Capability and Availability</h4>
+<p>In the Vehicle API, we use two concepts, <strong>Capability</strong> and <strong>Availability</strong>, to expose differences between vehicle models/grades and temporary unavailability, not hide them, and express them as a common "contract" for applications.</p>
+<ul>
+<li><strong>Capability</strong>: Indicates whether an equipment/function physically exists (permanent availability).  <ul>
+<li>Basically does not change (except for additions of equipment or functions, e.g., by OTA).  </li>
+</ul>
+</li>
+<li><strong>Availability</strong>: Indicates whether the equipment/function is currently usable (temporary availability).  <ul>
+<li>Changes dynamically depending on the vehicle state.</li>
+</ul>
+</li>
+</ul>
+<p>By distinguishing these two, applications can clearly determine whether:</p>
+<ul>
+<li>"This vehicle does not have the equipment/function at all" (Capability), or  </li>
+<li>"The equipment/function exists, but is currently unusable / conditions are not met" (Availability).</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The specifications of Capability and Availability are still under discussion and may change in future versions.</p>
+</div>
+<h4 id="2-5-2-capability-presenceabsence-of-equipmentfunction">2-5-2. Capability (Presence/Absence of Equipment/Function)</h4>
+<p>Capability represents whether a piece of equipment/function physically and permanently exists. Even when certain equipment is present, there may be differences in functions by equipment; therefore, Capability is managed per signal.  </p>
+<p>Capability is expressed as an error code (<code>ERROR_NOT_FOUND</code>) that can be obtained via the Vehicle API.  </p>
+<p>Applications can determine the presence or absence of Capability by calling the APIs related to the equipment/function they want to use.</p>
+<p>For example, if you want to operate the lumbar support function of a seat and adjust the lumbar support height, you can check whether the function/equipment exists by calling the API corresponding to the height of the lumbar support of the relevant seat and seeing whether the result returns an <code>ERROR_NOT_FOUND</code> error.  </p>
+<p>For details of how to call each API and error codes, see the Vehicle API reference document.</p>
+<p>To allow applications to correctly recognize Capability, OEMs must predefine the VSS tree for each vehicle and remove VSS nodes that do not exist as equipment/functions.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For VSS/VISS, see "<a href="../../03_VSS_VISS/03_vss_viss/">3. VSS/VISS</a>".</p>
+</div>
+<p>Typical use cases of Capability include:</p>
+<ul>
+<li>Hide the UI related to a function when a vehicle does not have that function, e.g., when the vehicle does not have a seat lumbar support function.  </li>
+<li>In a grade that does not have a sunroof, do not display the menu for sunroof control.</li>
+</ul>
+<h4 id="2-5-3-availability-temporary-availability-of-equipmentfunction">2-5-3. Availability (Temporary Availability of Equipment/Function)</h4>
+<p>Availability represents whether an equipment/function is currently usable (whether the conditions are satisfied), as a temporary, condition-dependent state.  </p>
+<p>Availability is expressed as a boolean (two values: true/false).  </p>
+<p>Each value means:</p>
+<ul>
+<li><code>true</code>: The equipment/function is currently available.  </li>
+<li><code>false</code>: The equipment/function exists but is currently unusable (conditions not met, temporary failure, etc.).</li>
+</ul>
+<p>Availability changes in response to various factors, such as:</p>
+<ul>
+<li>Startup/shutdown state of vehicle systems/ECUs.  </li>
+<li>Driving state of the vehicle (e.g., functions only operable while stopped).  </li>
+<li>Shift range (e.g., functions valid only in P range).  </li>
+<li>Door open/close state.  </li>
+<li>Restrictions based on safety concepts.  </li>
+<li>Temporary failure of sensors/actuators, system failures.  </li>
+<li>High-load state of the system.</li>
+</ul>
+<p>PAL monitors the vehicle state and updates Availability through the DataBroker Producer API (Yoriito VISS Producer Library) to reflect it in the Yoriito VISS Server.</p>
+<p>Typical use cases of Availability include:</p>
+<ul>
+<li>Make applications wait until the system is fully started.  </li>
+<li>Gray out door open/close UI while the vehicle is running.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Current implementation and future direction</p>
+<p>Currently, Availability is expressed in two ways.</p>
+<p>The first is as a kind of VSS node.</p>
+<details class="note" open="open">
+<summary>Note</summary>
+<p>For VSS/VISS, see "<a href="../../03_VSS_VISS/03_vss_viss/">3. VSS/VISS</a>".</p>
+</details>
+<p>If a piece of equipment/function can be controlled as an actuator,<br>
+a node with the suffix <code>_Availability_Actuator</code> is implemented.<br>
+If it can supply data as a sensor, a node with the suffix <code>_Availability_Sensor</code> is implemented.</p>
+<ul>
+<li>Example:  <ul>
+<li>Original node: <code>Vehicle.Cabin.Door.IsOpen</code>  </li>
+<li>Actuator Availability: <code>Vehicle.Cabin.Door.IsOpen_Availability_Actuator</code>  </li>
+<li>Sensor Availability: <code>Vehicle.Cabin.Door.IsOpen_Availability_Sensor</code></li>
+</ul>
+</li>
+</ul>
+<p>If you want to check Availability as an actuator, you retrieve the value of the <code>_Availability_Actuator</code> node.<br />
+If you want to check Availability as a sensor, you retrieve the value of the <code>_Availability_Sensor</code> node.</p>
+<p>The second is as data within VISS.</p>
+<p>In the data type <code>DataPointCurrent</code>, which expresses signal data exchanged according to VISS,<br />
+members <code>is_available_actuator</code> and <code>is_available_sensor</code> are defined to represent Availability.</p>
+<p><code>DataPointCurrent</code> consists of the following members:</p>
+<ul>
+<li><code>storedTimestamp</code>: The timestamp at which the signal data was stored in the Yoriito VISS Server.  </li>
+<li><code>value</code>: The signal data.  </li>
+<li><code>producedTimestamp</code>: The timestamp at which the signal data was generated.  </li>
+<li><code>is_available_actuator</code>: Availability as an actuator.  </li>
+<li><code>is_available_sensor</code>: Availability as a sensor.</li>
+</ul>
+<p>If you want to check Availability as an actuator, refer to the value of <code>is_available_actuator</code>.<br />
+If you want to check Availability as a sensor, refer to the value of <code>is_available_sensor</code>.</p>
+<p>In the future, the representation as VSS nodes is planned to be removed, and representation as VISS data will be unified.</p>
+<p>The reasons are:</p>
+<ul>
+<li>Because the procedure to first check the value of an <code>_Availability</code> node and then determine whether an API call is allowed is complicated. It is simpler to execute an API call and receive an error when the call is unavailable (Unavailable), and this also reduces the number of API accesses by avoiding pre-checks.  </li>
+<li>When adding new VSS nodes (adding new equipment definitions), <code>_Availability</code> nodes must also be added at the same time. This increases the cost of adding VSS nodes and bloats the size of the VSS tree.</li>
+</ul>
+</div>
+<h4 id="2-5-4-conditions-under-which-availability-changes">2-5-4. Conditions Under Which Availability Changes</h4>
+<p>Availability changes according to various factors. PAL monitors the vehicle state and updates Availability according to these conditions.  </p>
+<p>The conditions under which Availability changes differ by VSS node.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Currently, there is no clear definition of the conditions under which each VSS node should change its Availability.  </p>
+</div>
+<p>In a future update, clear definitions will be added for the conditions under which PAL should update Availability. This will include the minimum set of conditions that must be supported depending on the capabilities of the vehicle platform (e.g., when the vehicle system starts, Availability should be set to true), such as cases where the vehicle platform does not have the capability to finely track Availability for specific vehicle signals.</p>
+<h4 id="2-5-5-error-codes">2-5-5. Error Codes</h4>
+<p>The Yoriito Vehicle API aims to organize errors that tend to be scattered across implementations and vehicle differences from a common perspective, and to simplify error handling on the application side.  </p>
+<p>The architecture of the Yoriito Vehicle API consists of multiple components, such as applications, the Yoriito VISS Server, and PAL. These components use a consistent set of error code definitions.  </p>
+<p>This makes error handling between components consistent and simplifies debugging because developers of each component work with the same set of error codes.</p>
+<h5 id="error-code-categories">Error Code Categories</h5>
+<p>Error codes are broadly classified into two categories:</p>
+<ul>
+<li><strong>VISS</strong>: Errors that occur in communication with the Yoriito VISS Server. These are HTTP status–code-based errors conforming to the COVESA VISS v3 specification.  </li>
+<li><strong>API</strong>: Errors that are completed inside the API layer, such as the Yoriito Signal API. These are error codes based on Linux <code>errno</code>.</li>
+</ul>
+<p><strong>VISS-category error codes</strong>  </p>
+<p>Errors that occur in communication with the VISS Server conform to the COVESA VISS v3 specification with some extensions.</p>
+<ul>
+<li><strong>ERROR_BAD_REQUEST (400)</strong>: The request is invalid.  </li>
+<li><strong>ERROR_UNAUTHORIZED (401)</strong>: The access token is invalid.  </li>
+<li><strong>ERROR_FORBIDDEN (403)</strong>: The server refused to execute the request.  </li>
+<li><strong>ERROR_NOT_FOUND (404)</strong>: The requested data was not found.  </li>
+<li><strong>ERROR_REQUEST_TIMEOUT (408)</strong>: The request timed out.  </li>
+<li><strong>ERROR_TOO_MANY_REQUESTS (429)</strong>: Rate limiting due to too many requests.  </li>
+<li><strong>ERROR_INTERNAL_SERVER_ERROR (500)</strong>: An internal error occurred in the server.  </li>
+<li><strong>ERROR_BAD_GATEWAY (502)</strong>: The response from the upstream server is invalid.  </li>
+<li><strong>ERROR_SERVICE_UNAVAILABLE (503)</strong>: The server is temporarily unable to process the request.  </li>
+<li><strong>ERROR_GATEWAY_TIMEOUT (504)</strong>: The response from the upstream server timed out.</li>
+</ul>
+<p><strong>API-category error codes</strong>  </p>
+<p>Errors that are completed within the API are defined based on Linux <code>errno</code>.</p>
+<ul>
+<li><strong>ERROR_PERM (1)</strong>: Insufficient permission for the operation.  </li>
+<li><strong>ERROR_NOMEM (12)</strong>: There is not enough free memory.  </li>
+<li><strong>ERROR_ACCES (13)</strong>: No permission.  </li>
+<li><strong>ERROR_INVAL (22)</strong>: Invalid argument.  </li>
+<li><strong>ERROR_NODATA (61)</strong>: Data does not exist.  </li>
+<li><strong>ERROR_TIMEDOUT (110)</strong>: The operation timed out.  </li>
+<li><strong>ERROR_CONNREFUSED (111)</strong>: Connection refused.  </li>
+<li><strong>ERROR_CANCELED (125)</strong>: Operation was canceled.  </li>
+<li><strong>ERROR_UNAVAILABLE (1000)</strong>: Data is unavailable (Availability is false).  </li>
+<li><strong>ERROR_UNSUBSCRIBE (1001)</strong>: The subscription to be unsubscribed does not exist.</li>
+</ul>
+<h4 id="2-5-6-error-detection-and-responsibilities-per-layer">2-5-6. Error Detection and Responsibilities per Layer</h4>
+<p>Errors are detected at each layer of the system and finally propagated to the application. Responsibilities of each layer are as follows.</p>
+<h5 id="access-api-signal-api-databroker-consumer-api">Access API / Signal API / DataBroker Consumer API</h5>
+<p>Applications basically only need to be aware of the errors returned by the Access API / Signal API. The Access API / Signal API maps and returns the following errors as part of a common error vocabulary:</p>
+<ul>
+<li>Errors detected inside the Access API / Signal API (argument checks, out-of-memory, etc.).  </li>
+<li>Errors detected inside the implementation of the DataBroker Consumer API (argument checks, out-of-memory, etc.).  </li>
+<li>Errors returned by the VISS Server.</li>
+</ul>
+<h5 id="viss-server">VISS Server</h5>
+<p>The VISS Server mainly detects errors related to the VSS tree and the protocol. It also propagates errors notified by PAL to the upper layers.</p>
+<ul>
+<li>Errors in resolving VSS paths.  </li>
+<li>Type mismatch.  </li>
+<li>Insufficient permissions.  </li>
+<li>Other operations that are not allowed on the VSS tree.  </li>
+<li>Errors propagated from PAL.</li>
+</ul>
+<h5 id="pal-databroker-producer-api">PAL / DataBroker Producer API</h5>
+<p>PAL detects errors that originate in the state, communication, and equipment state of the real vehicle or simulator.</p>
+<ul>
+<li>Errors detected inside the implementation of the DataBroker Producer API (argument checks, out-of-memory, etc.).  </li>
+<li>Communication errors of ECUs and buses.  </li>
+<li>Sensor failures, actuator failures.  </li>
+<li>Errors related to Capability/Availability (e.g., below safety thresholds, priority conflicts, invocation limits, battery conditions).</li>
+</ul>
+<p>These errors are mapped to the error vocabulary defined by the DataBroker Producer API and propagated through the Yoriito VISS Server to the Yoriito Signal API and the application.</p>
+<p>The figure summarizing the error handling flow at each layer is as follows:  </p>
+<p><img alt="Yoriito_ErrorPropagation" src="../assets/Yoriito_ErrorPropagation.drawio.svg" /></p>
+<p align="center"><em>Figure: Error Propagation</em></p>
+
+<p>By aligning a common error vocabulary vertically across layers, application/PAL developers can easily understand "what happened and where," and implement consistent exception handling.</p>
+<h5 id="consistency-of-behavior-between-simulator-and-real-vehicle">Consistency of Behavior Between Simulator and Real Vehicle</h5>
+<p>The "contracts" of the Access API, Signal API, error vocabulary, Capability, and Availability should be implemented identically for both real-vehicle environments and simulator environments.  </p>
+<p>This allows the behavior seen from the upper layers (Signal API, applications) to remain consistent even if the PAL implementation is swapped, and yields the following benefits:</p>
+<ul>
+<li>Applications developed and tested in a simulator environment can be moved to a real-vehicle environment as is.  </li>
+<li>A common test suite can detect and correct behavioral differences between PAL implementations.  </li>
+<li>Application developers can focus on development without being aware of differences in runtime environments.</li>
+</ul>
+<h4 id="2-5-7-summary">2-5-7. Summary</h4>
+<p>In this section, we explained three important concepts for defining the behavior of the Vehicle API.</p>
+<ul>
+<li><strong>Capability</strong>: Represents whether equipment/functions physically exist. It expresses permanent differences between vehicle models and grades.  </li>
+<li><strong>Availability</strong>: Represents whether functions are currently usable. It expresses dynamic differences due to vehicle states and temporary failures.  </li>
+<li><strong>Error codes</strong>: Represent reasons for API call failures using a common vocabulary and enable consistent error handling across layers.</li>
+</ul>
+<p>By clearly defining these concepts as a "contract," we gain the following benefits.</p>
+<h5 id="for-application-developers">For application developers</h5>
+<ul>
+<li>Access vehicle functions in a unified way without being aware of differences between vehicle models and grades.  </li>
+<li>Clearly distinguish between "the function does not exist" and "the function is temporarily unavailable" and provide appropriate UI and error messages.  </li>
+<li>Implement consistent exception handling using a common error vocabulary.  </li>
+<li>Improve development and testing efficiency by running the same code in both simulator and real-vehicle environments.</li>
+</ul>
+<h5 id="for-pal-developers">For PAL developers</h5>
+<ul>
+<li>By following the common framework of Capability / Availability / error codes, responsibility separation with upper layers becomes clear.  </li>
+<li>While hiding details specific to the vehicle platform, PAL can still convey the necessary information to the upper layers.  </li>
+<li>This leads to a design that can more easily cope with future feature extensions and changes in vehicle platforms.</li>
+</ul>
+<p>Note that the specifications of Capability and Availability are still under discussion, and the implementation method may change in future versions. For the latest specifications, see the Vehicle API reference document.</p>
+<h3 id="2-6-release-cycle-and-versioning">2-6. Release Cycle and Versioning</h3>
+<p>In this section, we describe how deliverables of the Yoriito Vehicle API are released and how they are versioned.</p>
+<h4 id="2-6-1-versioning">2-6-1. Versioning</h4>
+<p>The version of the Yoriito Vehicle API is managed at two levels.</p>
+<h5 id="version-of-the-entire-project">Version of the entire project</h5>
+<p>This is the version of the Yoriito Vehicle API as a whole.<br />
+It is a version that spans multiple components, such as the Yoriito Access API, Yoriito Signal API, Yoriito VISS Server, and Yoriito VSS.  </p>
+<p>When users indicate "which release they are using," they refer to this version.  </p>
+<p>For example, it is represented as "Yoriito Vehicle API 0.3.0".</p>
+<h5 id="version-of-each-component">Version of each component</h5>
+<p>The Yoriito Vehicle API consists of multiple components, each with its own version.<br />
+Versions of individual components are referenced when developers track the change history of a specific component or check compatibility.  </p>
+<p>Both project-level versioning and per-component versioning adopt <strong>semantic versioning (MAJOR.MINOR.PATCH)</strong>.</p>
+<p>In addition, the following components, which are results of integration of multiple components, are not assigned their own component version but share the project-wide version:</p>
+<ul>
+<li>Yocto recipes and the Yocto Linux OS images and Yocto SDKs generated from them.  </li>
+<li>Project-wide documents (including this document).<br><br></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<ul>
+<li>Currently, the Yoriito Vehicle API is in the 0.X.Y phase, and backward compatibility may not be maintained as specifications and implementations change.  </li>
+<li>This period is positioned as a phase to stabilize specifications while incorporating feedback.  </li>
+<li>From version 1.0.0 onward, the handling of major versions and the approach to compatibility are planned to become stricter.</li>
+</ul>
+</div>
+<h4 id="2-6-2-release-cycle">2-6-2. Release Cycle</h4>
+<p>In principle, an OSS release is made every six months.  </p>
+<p>In addition, if critical bug fixes or security responses are needed, PATCH releases may be made without waiting for a regular release.  </p>
+<p>The release cycle may change in the future.</p>
+<h5 id="development-phases-and-transition-of-major-versions">Development Phases and Transition of Major Versions</h5>
+<p>Development of the Yoriito Vehicle API consists of three phases, as shown in the following diagram:  </p>
+<p><img alt="Yoriito_DevPhaseOverview" src="../assets/Yoriito_DevPhaseOverview.drawio.svg" /></p>
+<p align="center"><em>Figure: Development Phase</em></p>
+
+<ol>
+<li><strong>Development Phase</strong>: A period in which active development of new features takes place. During this period, breaking changes may be introduced.  </li>
+<li><strong>Stable Phase</strong>: A period in which backward compatibility is guaranteed. New features and security updates are provided, but no changes that break backward compatibility are made.  </li>
+<li><strong>Maintenance Phase</strong>: A period in which no new feature development is done and only security updates and bug fixes are provided.</li>
+</ol>
+<p>As shown in the figure below, there are two types of major versions: <strong>major versions that only have a Development Phase</strong> and <strong>major versions that only have Stable and Maintenance Phases</strong>.  </p>
+<p><img alt="Relationship_between_Development_Phases_and_Major_Versions" src="../assets/Yoriito_DevPhaseOverlap.drawio.svg" /></p>
+<p align="center"><em>Figure: Relationship between Development Phases and Major Versions</em></p>
+
+<p>New feature development is carried out in a major version (X.0.0) that has a Development Phase.</p>
+<p>Once this major version has become sufficiently stable, the next major version (Y.0.0) is released.</p>
+<p>This major version (Y.0.0) is positioned as an <strong>LTS (Long-Term Support) release</strong>, which is a major version composed of the Stable and Maintenance Phases. An LTS release is supported for multiple years.  </p>
+<p>In parallel with the LTS release, the Development Phase for the next major version starts. When an LTS release transitions to the Maintenance Phase, <strong>the next LTS release must already be available</strong>.  </p>
+<p>Users need to consider migrating to the next major version when their current major version enters the Maintenance Phase.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../../01_yoriito_vehicle_api_overview/01_yoriito_vehicle_api_overview/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 1. What is the Yoriito Vehicle API?">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                1. What is the Yoriito Vehicle API?
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../03_VSS_VISS/03_vss_viss/" class="md-footer__link md-footer__link--next" aria-label="Next: 3. Introduction to VSS/VISS">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                3. Introduction to VSS/VISS
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright 2026 JASPAR
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "content.code.copy", "search.suggest", "search.highlight", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  <script src="../../../assets/javascripts/custom.js"></script>
+
+  </body>
+</html>

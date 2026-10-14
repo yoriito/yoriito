@@ -1,0 +1,21 @@
+word,definition
+Yoriito Vehicle API,"An API standardization activity by the Yoriito project to abstract access to vehicle signals, composed of Yoriito Signal API and Yoriito Access API."
+Yoriito Project,"Open source project that provides Yoriito Vehicle API and related components, defining the scope and architecture for vehicle signal access."
+Access API,"High-level API that abstracts  Signal API for specific use cases, focusing on usability for applications."
+Access Library,Shared library that implements the  Access API for applications.
+Signal API,Low-level application-facing API that provides access to vehicle signals based on  VSS definitions.
+Signal Library,Shared library implementation of the  Signal API for applications.
+VISS,Extended VISS protocol and message schema set tailored for  Vehicle API for accessing vehicle signals.
+VISS Server,Central data broker server that manages the VSS data tree and mediates communication between applications and PAL.
+VISS Consumer Library,Client library for applications to access  VISS Server using the VISS protocol.
+VISS Producer Library,Client library for PAL implementations to supply signals and receive actuator targets from  VISS Server.
+VSS,Extended VSS signal definitions provided by  for OEMs and suppliers to derive vehicle-specific VSS trees.
+devcontainer,Pre-configured development container environment including SDKs and toolchains for  Vehicle API.
+Vehicle API platform,"Platform composed of multiple  components, versioned as a whole release unit."
+Capability,Concept representing whether a feature or equipment physically exists and is provided by the vehicle.
+Availability,"Concept representing whether a feature is currently usable under given vehicle conditions, expressed as boolean."
+Signal API error vocabulary,Common error vocabulary shared across components to unify error handling for  Vehicle API.
+Inspect,"API method to retrieve metadata such as type, unit, and range for a given signal path."
+Headless App,Backend C++ application that receives UI requests via gRPC and calls  Signal API.
+Platform Abstraction Layer,"Abstraction layer between vehicle platform and  VISS Server, converting platform-specific signals to VSS."
+TUI (Text User Interface),Text-based UI provided to operate simulator vehicle and test various signals without coding.
