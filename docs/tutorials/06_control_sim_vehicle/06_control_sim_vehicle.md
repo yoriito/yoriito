@@ -37,7 +37,7 @@ The overall architecture of the sample application is shown in the figure below.
 **<u>Yoriito Signal API</u>**  
 
 - This is the vehicle‑oriented API used from the Headless Application.  
-- The API is provided as shared libraries named `libyoriito_api_***.so`.
+- The API is provided as shared libraries named `libyoriito_vehicle_api_<domain>.so`.
 
 **<u>Yoriito VISS Server</u>**  
 
@@ -60,6 +60,8 @@ The sample application features an emergency button. When you press the emergenc
 
 ### {{ h3_sec("Verify the App Behavior") }}
 
+Run all commands in this section in terminals inside the development container configured in ["4. Setting Up the Application Development Environment"](../04_environment_setup/04_environment_setup.md).
+
 1. Start the simulator (PAL)  
 
     1. Move to the `ref_pal` directory.
@@ -67,9 +69,9 @@ The sample application features an emergency button. When you press the emergenc
         $ cd /work/ref_pal
         ``` 
 
-    1. Run the following commands (note that `./init_pal.sh` takes about 3–5 minutes).
+    1. Run the following commands.
         ```shell
-        $ npm install
+        $ npm ci
         $ ./init_pal.sh
         $ npx electron . --no-sandbox
         ```
@@ -84,7 +86,7 @@ The sample application features an emergency button. When you press the emergenc
     1. Build the application.
         ```shell
         $ cmake -S . -B build 
-        $ cmake --build build -j
+        $ cmake --build build
         ```
 
     1. Run the application.

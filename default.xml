@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<manifest>
+  
+  <default revision="main" />
+  <remote name="github" fetch="https://github.com/" />
+  <remote name="yocto" fetch="https://git.yoctoproject.org/" />
+  <remote name="oe" fetch="https://git.openembedded.org/" />
+
+  <project path="poky" name="poky" remote="yocto" revision="refs/tags/scarthgap-5.0.16" upstream="scarthgap" clone-depth="1" />
+  <project path="meta-openembedded" name="meta-openembedded" remote="oe" revision="29a044218285fdc7fcdd63d5f0929cb3a27b6fed" upstream="scarthgap" />
+
+  <project path="meta-raspberrypi" name="meta-raspberrypi" remote="yocto" revision="6ca1f75017cc5d5acdb8bb05634c4bc01fa049fd" upstream="scarthgap" />
+
+  <project path="meta-rust-bin" name="rust-embedded/meta-rust-bin" remote="github" revision="37077bc7eeee69dc9ffbcc409397388fe3a37b6e" upstream="master" />
+  <project path="meta-flutter" name="meta-flutter/meta-flutter" remote="github" revision="b6e338a8b1fc9f8907f2c9a167c972a1907ff2ea" upstream="scarthgap" />
+
+  <project path="meta-yoriito" name="yoriito/meta-yoriito" remote="github" revision="860863c81aa783d25e32239f303252c0becc89f3" upstream="main" />
+  <project path="meta-yoriito-tutorial" name="yoriito/meta-yoriito-tutorial" remote="github" revision="58c564a18cacd6ac00bb42c2d630d2f29bd3e343" upstream="main" />
+
+</manifest>
