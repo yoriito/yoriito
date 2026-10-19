@@ -166,16 +166,15 @@ Based on the generic vehicle signal tree defined by COVESA VSS, Yoriito VSS perf
 
 Clone the following repository: https://github.com/yoriito/yoriito-vss.git
 
-Like COVESA VSS, Yoriito VSS can be exported in tree or CSV format using the VSS tool.
+The repository already contains the generated Yoriito VSS under `artifact/`, exported in several formats.
 In particular, CSV format is highly readable when you need to check signal units and descriptions.
 
-Example command to export Yoriito VSS in CSV format:
+The overlay vspec files are stored under `vss/`, and COVESA VSS is referenced as the git submodule `external/vehicle_signal_specification`.
+To regenerate the artifacts yourself, run the script provided in the repository, which runs `vspec export` with all overlays (vss-tools or pipx is required):
 
 ```shell
-vspec export csv \
-  --vspec ./vehicle_signal_specification/spec/VehicleSignalSpecification.vspec \
-  $(find ./vss -name '*.vspec' -exec echo --overlays {} \;) \
-  --output Yoriito_vss_v5.0.csv
+cd yoriito-vss
+./scripts/create_vspec.sh
 ```
 For details on how to use the VSS tool, see: https://covesa.github.io/vehicle_signal_specification/ecosystem/tools/index.html
 
@@ -258,7 +257,7 @@ For each of these elements, whether and how overlay is allowed is defined as fol
 As long as changes follow the above rules, the Yoriito VISS Server and Vehicle API libraries will function correctly.
 For overlays that do not follow these rules, the Yoriito Vehicle API cannot guarantee correct behavior of its deliverables, so users must handle them on their own.
 
-### 3-4-2. About Yoriito VISS
+#### 3-4-2. About Yoriito VISS
 
 In the architecture of the Yoriito Vehicle API, the Yoriito VISS Server (kura) plays a central role. It manages the VSS tree and acts as a "data hub" connecting the upper layers (Yoriito Signal API / applications) and the lower layers (PAL / vehicle platform).
 
@@ -296,7 +295,7 @@ Yoriito VISS is based on COVESA VISS v3 but introduces some changes and extensio
 | Aspect | COVESA VISS v3 | Yoriito VISS |
 | --- | --- | --- |
 | Interface toward PAL/vehicle platform | Not clearly defined | Application-facing and PAL/vehicle-platform-facing interfaces are separated and defined as Consumer/Producer Services |
-| Transport | WebSocket, HTTP, MQTT are mandatory; gRPC is optional | Specialized for gRPC |
+| Transport | WebSocket, HTTP, MQTT, gRPC; at least one must be supported | Specialized for gRPC |
 | Service structure | Single service (Get, Set, Subscribe, Unsubscribe) handles both Current and Target values | Access separation by Consumer/Producer Services; some RPC methods are added |
 | Data representation | JSON Schema based | Strongly typed Protocol Buffers |
 
@@ -339,8 +338,8 @@ This separation brings the following benefits:
 
 ###### Transport protocol
 
-COVESA VISS v3 defines WebSocket and HTTP as mandatory, and MQTT and gRPC as optional.  
-In contrast, Yoriito VISS adopts **only gRPC** as the transport protocol.
+COVESA VISS v2 required servers to support HTTP and WebSocket. COVESA VISS v3 lists WebSocket, HTTP, MQTT, gRPC and requires that at least one of them be supported.  
+Yoriito VISS adopts **only gRPC** as the transport protocol.
 
 Reasons for choosing gRPC include:
 
@@ -388,19 +387,19 @@ Yoriito VISS splits this into **Consumer Service** and **Producer Service**, and
 
 ###### Yoriito VISS-specific extensions: Inspect / Define / Delete
 
-Yoriito VISS introduces the following RPC methods that do not exist in COVESA VISS v3:
+Yoriito VISS introduces the following dedicated RPC methods:
 
 - **Inspect**:   
-  Retrieves metadata of VSS nodes (data type, unit, description, etc.). Available in both Consumer and Producer Services.  
+  Retrieves metadata of VSS nodes (data type, unit, description, etc.). Available in both Consumer and Producer Services. In COVESA VISS v3 the same information is obtained through `Get` with the `metadata` filter (signal discovery); Yoriito VISS provides it as a separate RPC.
 - **Define**:  
   Adds VSS node definitions at runtime. Used by PAL to register needed signals in the VISS Server according to the vehicle platform configuration (Producer Service only).  
 - **Delete**:  
   Deletes defined VSS nodes (Producer Service only).  
 
-With Define / Delete, it becomes possible to modify static VSS definitions files on already released vehicles after deployment.  
+With Define / Delete, it becomes possible to modify VSS node definitions on already released vehicles after deployment.  
 This allows flexible construction of the VSS tree as vehicles and software evolve.
 
-> Note: Define/Delete are currently under development and not yet available.
+> Note: Define / Delete are implemented in Kura and in the Yoriito VISS Producer Library (`DataBrokerProducer::Define` / `Delete`). The "initializable state" (`Server.Initializing`) described in the Yoriito VISS design documentation is not implemented in Kura yet; Define / Delete can be called at any time.
 
 ###### Message schema differences
 
@@ -439,7 +438,7 @@ This allows control of which data can be accessed by applications and PAL:
 For some metadata attributes in COVESA VSS, Yoriito VISS simplifies implementation to improve practicality:
 
 - `pattern`: Only supports string arrays (a single string is treated as an array of one element).  
-- `max` / `min`: Only `int32` type is supported (sufficient for practical ranges).  
+- `max` / `min`: Expressed as `ValueType`, so they follow the data type of the signal.  
 - `allowed`: Only string arrays are supported (enumeration values expressed as strings).
 
 ###### Filter differences
@@ -456,7 +455,7 @@ This allows stronger integration with static typing.
 | `curvelog`  | Curve-log filter                   | `CurvelogFilter` (not supported yet) |
 | `history`   | Get historical data                | `HistoryFilter` (not supported yet)  |
 
-### 3-4-3. How VISS is involved in this tutorial
+#### 3-4-3. How VISS is involved in this tutorial
 
 In this tutorial—especially in application development using the Yoriito Signal API—developers will rarely need to construct or parse VISS messages directly, because the Yoriito Signal API abstracts away the details of VISS.
 

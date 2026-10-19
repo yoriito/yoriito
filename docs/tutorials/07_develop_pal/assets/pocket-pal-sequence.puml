@@ -11,7 +11,7 @@ loop while running
     note over main, VSSBroker
     convert can to vss
     end note
-    main -> VSSBroker: write(VEHICLE_SPEED, 100.0, ...)
+    main -> VSSBroker: write(WINDOW_POSITION, 100, ...)
 end
 deactivate main
 
@@ -22,7 +22,7 @@ deactivate main
 == VSS Receive Loop ==
 main ->> main: on_vss()
 activate main
-main -> VSSBroker: subscribe(VEHICLE_SPEED)
+main -> VSSBroker: subscribe(WINDOW_POSITION)
 VSSBroker --> main: ProducerSubscribeContext
 
 loop while running

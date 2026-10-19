@@ -112,45 +112,53 @@ This sample pal runs in a loop, reading CAN frames from vcan, converting them to
 
 ##### Modify CAN → VSS conversion
 
-Here we modify the implementation that receives a CAN signal from vcan, converts it to VSS, and writes it to Kura. This process is implemented in the [main.cpp(link)](https://github.com/yoriito/yoriito-tutorial/blob/main/pocket-pal/pocket-pal-cc/main.cpp#L36).  
+Here we modify the implementation that receives a CAN signal from vcan, converts it to VSS, and writes it to Kura. This process is implemented in the [main.cpp(link)](https://github.com/yoriito/yoriito-tutorial/blob/main/pocket-pal/pocket-pal-cc/main.cpp).  
 
 ```cpp
-void on_can(std::shared_ptr<CANBroker> can_broker){
-    while(running) {
-        auto frame = can_broker.get()->read();
-        if (!frame.has_value()){
-            continue;
-        }
-        auto valid_frame = frame.value();
-        std::cout << "[CAN][RECV]" << "id: " << valid_frame.can_id << ", data: " << valid_frame.data << std::endl;
-        VSSBroker::write<double>(VEHICLE_SPEED, 100.f, true, true);
-        std::cout << "[VSS][SEND]" << "path: " << VEHICLE_SPEED << ", payload: " << 100.0f << std::endl;
+void on_can(std::shared_ptr<CANBroker> can_broker) {
+  while (running) {
+    auto frame = can_broker.get()->read();
+    if (!frame.has_value()) {
+      continue;
     }
+    auto valid_frame = frame.value();
+    YORIITO_LOG_INFO("CAN", "[RECV] id: " + std::to_string(valid_frame.can_id) +
+                                ", data: " + format_can_data(valid_frame));
+
+    VSSBroker::write<std::uint8_t>(WINDOW_POSITION, 100, true, true);
+    YORIITO_LOG_INFO("VSS", "[SEND] path: " + std::string(WINDOW_POSITION) +
+                                ", payload: 100");
+  }
 }
 ```
 
-As shown above, the data received from vcan is stored in the variable `valid_frame`. The code writes the value 100.f to Kura with the path VEHICLE_SPEED (=`Vehicle.Speed`).  
+As shown above, the data received from vcan is stored in the variable `valid_frame`. The code writes the value 100 to Kura with the path WINDOW_POSITION (=`Vehicle.Cabin.Door.Row1.DriverSide.Window.Position`).  
 
-For example, if you want to modify the implementation so that when the received CAN ID is 0x100, the first byte of the CAN payload is treated as vehicle speed and written to Kura, it will look like this.  
+For example, if you want to modify the implementation so that when the received CAN ID is 0x100, the first byte of the CAN payload is treated as window position and written to Kura, it will look like this.  
 
 ```diff
-void on_can(std::shared_ptr<CANBroker> can_broker){
-    while(running) {
-        auto frame = can_broker.get()->read();
-        if (!frame.has_value()){
-            continue;
-        }
-        auto valid_frame = frame.value();
-        std::cout << "[CAN][RECV]" << "id: " << valid_frame.can_id << ", data: " << valid_frame.data << std::endl;
-        
--       VSSBroker::write<double>(VEHICLE_SPEED, 100.f, true, true);
--       std::cout << "[VSS][SEND]" << "path: " << VEHICLE_SPEED << ", payload: " << 100.0f << std::endl;        
-+       if (valid_frame.can_id == 0x100) {
-+           auto speed = static_cast<double>(valid_frame.data[0]);
-+           VSSBroker::write<double>(VEHICLE_SPEED, speed, true, true);
-+           std::cout << "[VSS][SEND]" << "path: " << VEHICLE_SPEED << ", payload: " << speed << std::endl;
-+       }
+void on_can(std::shared_ptr<CANBroker> can_broker) {
+  while (running) {
+    auto frame = can_broker.get()->read();
+    if (!frame.has_value()) {
+      continue;
     }
+    auto valid_frame = frame.value();
+    YORIITO_LOG_INFO("CAN", "[RECV] id: " + std::to_string(valid_frame.can_id) +
+                                ", data: " + format_can_data(valid_frame));
+
+-   VSSBroker::write<std::uint8_t>(WINDOW_POSITION, 100, true, true);
+-   YORIITO_LOG_INFO("VSS", "[SEND] path: " + std::string(WINDOW_POSITION) +
+-                               ", payload: 100");
++   if (valid_frame.can_id == 0x100) {
++     auto position = static_cast<std::uint8_t>(valid_frame.data[0]);
++     VSSBroker::write<std::uint8_t>(WINDOW_POSITION, position, true, true);
++     YORIITO_LOG_INFO(
++         "VSS", "[SEND] path: " + std::string(WINDOW_POSITION) +
++                    ", payload: " +
++                    std::to_string(static_cast<unsigned int>(position)));
++   }
+  }
 }
 ```
 
@@ -158,23 +166,27 @@ When you actually develop a `PAL`, you will update VSS data in Kura based on the
 
 ##### Modify VSS → CAN conversion
 
-Here we modify the implementation that receives VSS from Kura, converts it to CAN, and writes it to vcan. This process is implemented in the [main.cpp(link)](https://github.com/yoriito/yoriito-tutorial/blob/main/pocket-pal/pocket-pal-cc/main.cpp#L50).  
+Here we modify the implementation that receives VSS from Kura, converts it to CAN, and writes it to vcan. This process is implemented in the [main.cpp(link)](https://github.com/yoriito/yoriito-tutorial/blob/main/pocket-pal/pocket-pal-cc/main.cpp).  
 
 As shown in above link, the data received from Kura is stored in the variable `data_point`. The code writes a hard-coded payload to vcan with CAN ID 256.  
 
-For example, if you want to modify the implementation so that when the received VSS path is `Vehicle.Speed`, you send a CAN frame with ID 255 to vcan,   
-using the received vehicle speed as the first byte of the payload, it will look like this.  
+For example, if you want to modify the implementation so that when the received VSS path is `Vehicle.Cabin.Door.Row1.DriverSide.Window.Position`, you send a CAN frame with ID 255 to vcan,   
+using the received window position as the first byte of the payload, it will look like this.  
 
 ```diff
 void on_vss(std::shared_ptr<CANBroker> can_broker){
 ...
 -           // TODO: users need to build any can frame from data_point
 -           can_broker.get()->write(256, {0x27, 0x10, 0x1F, 0x40, 0x00, 0x00, 0x00, 0x00});
--           std::cout << "[CAN][SEND]" << "id: " << 256 << ", payload" << "0x27, 0x10, 0x1F, 0x40, 0x00, 0x00, 0x00, 0x00" << std::endl;
-+           if (path == "Vehicle.Speed") {
-+               auto speed = static_cast<char>(value);
-+               can_broker.get()->write(255, {speed, 0x10, 0x1F, 0x40, 0x00, 0x00, 0x00, 0x00});
-+               std::cout << "[CAN][SEND]" << "id: " << 255 << ", payload" << speed << ", 0x10, 0x1F, 0x40, 0x00, 0x00, 0x00, 0x00" << std::endl;
+-           YORIITO_LOG_INFO("CAN", "[SEND] id: 256, payload: "
+-                                   "27 10 1f 40 00 00 00 00");
++           if (path == WINDOW_POSITION) {
++               auto position = std::get<std::uint8_t>(value);
++               can_broker.get()->write(255, {position, 0x10, 0x1F, 0x40, 0x00, 0x00, 0x00, 0x00});
++               YORIITO_LOG_INFO(
++                   "CAN", "[SEND] id: 255, payload: " +
++                              std::to_string(static_cast<unsigned int>(position)) +
++                              " 10 1f 40 00 00 00 00");
 +           }
         }
     }
@@ -205,8 +217,8 @@ $ make install
 # run
 $ vshot tui                           # Use TUI mode
 $ vshot -i                            # Use interactive mode
-$ vshot get-current Vehicle.Speed     # Get the current value of Vehicle.Speed
-$ vshot set-current Vehicle.Speed 100 # Set the current value of Vehicle.Speed to 100
+$ vshot get-current Vehicle.Cabin.Door.Row1.DriverSide.Window.Position     # Get the current value of Vehicle.Cabin.Door.Row1.DriverSide.Window.Position
+$ vshot set-current Vehicle.Cabin.Door.Row1.DriverSide.Window.Position 100 # Set the current value of Vehicle.Cabin.Door.Row1.DriverSide.Window.Position to 100
 ```
 
 For example, when you run it as a TUI, the following screen is displayed.  
@@ -246,9 +258,9 @@ The detailed steps are as follows.
 1. Send a VSS signal  
   After step 1, PAL converts the received data to a VSS signal and notifies Kura.  
 1. Read the VSS signal  
-  Use the TUI to get the value. If you have not modified pocket-pal, the path to get is `Vehicle.Speed`.  
+  Use the TUI to get the value. If you have not modified pocket-pal, the path to get is `Vehicle.Cabin.Door.Row1.DriverSide.Window.Position`.  
 1. Check the returned VSS signal  
-  The TUI returns the value of `Vehicle.Speed`. If you have not modified pocket-pal, you should get 100.  
+  The TUI returns the value of `Vehicle.Cabin.Door.Row1.DriverSide.Window.Position`. If you have not modified pocket-pal, you should get 100.  
 
 
 #### {{ h4_sec("Write VSS to Kura and verify that a CAN frame is written to vcan") }}

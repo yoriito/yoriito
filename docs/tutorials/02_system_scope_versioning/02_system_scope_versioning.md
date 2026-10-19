@@ -87,7 +87,7 @@ The DataBroker Consumer/Producer API and Yoriito VISS Consumer/Producer Library 
 - **Yoriito VISS Producer Library**  
   An implementation of the DataBroker Producer API that provides the access method to the Yoriito VISS Server as the concrete communication backend. As with the Consumer Library, it wraps client-side implementations generated from the Yoriito VISS schema and provides them as an easy-to-use interface.
 
-Because only the PAL implementation directly uses the DataBroker Consumer/Producer API, the DataBroker Consumer/Producer API is sometimes collectively referred to as the **PAL API**.  
+Because only the PAL implementation directly uses the DataBroker Producer API, the DataBroker Producer API is sometimes collectively referred to as the **PAL API**.  
 Details of these APIs and VSS/VISS are explained in "[3. VSS/VISS](../03_VSS_VISS/03_vss_viss.md)".
 
 The **Yoriito Signal API** further abstracts the DataBroker Consumer API to provide an API that can handle data as vehicle signals. As mentioned above, applications directly use the Yoriito Signal API; the DataBroker Consumer API is generally not used directly from applications.  
@@ -203,7 +203,7 @@ For details of how to call each API and error codes, see the Vehicle API referen
 To allow applications to correctly recognize Capability, OEMs must predefine the VSS tree for each vehicle and remove VSS nodes that do not exist as equipment/functions.
 
 !!! note
-    For VSS/VISS, see "[3. VSS/VISS](../03_VSS_VISS/03_vss_viss.md)".
+    For VSS/VISS, see "[3. Introduction to VSS/VISS](../03_VSS_VISS/03_vss_viss.md)".
 
 Typical use cases of Capability include:
 
@@ -238,27 +238,11 @@ Typical use cases of Availability include:
 - Make applications wait until the system is fully started.  
 - Gray out door open/close UI while the vehicle is running.
 
-!!! warning "Current implementation and future direction"
-    Currently, Availability is expressed in two ways.
-
-    The first is as a kind of VSS node.
+!!! warning "Current implementation"
+    Availability is expressed as data within VISS.
 
     ???+ note
         For VSS/VISS, see "[3. VSS/VISS](../03_VSS_VISS/03_vss_viss.md)".
-
-    If a piece of equipment/function can be controlled as an actuator,<br>
-    a node with the suffix `_Availability_Actuator` is implemented.<br>
-    If it can supply data as a sensor, a node with the suffix `_Availability_Sensor` is implemented.
-
-    - Example:  
-        - Original node: `Vehicle.Cabin.Door.IsOpen`  
-        - Actuator Availability: `Vehicle.Cabin.Door.IsOpen_Availability_Actuator`  
-        - Sensor Availability: `Vehicle.Cabin.Door.IsOpen_Availability_Sensor`
-
-    If you want to check Availability as an actuator, you retrieve the value of the `_Availability_Actuator` node.  
-    If you want to check Availability as a sensor, you retrieve the value of the `_Availability_Sensor` node.
-
-    The second is as data within VISS.
 
     In the data type `DataPointCurrent`, which expresses signal data exchanged according to VISS,  
     members `is_available_actuator` and `is_available_sensor` are defined to represent Availability.
@@ -274,12 +258,8 @@ Typical use cases of Availability include:
     If you want to check Availability as an actuator, refer to the value of `is_available_actuator`.  
     If you want to check Availability as a sensor, refer to the value of `is_available_sensor`.
 
-    In the future, the representation as VSS nodes is planned to be removed, and representation as VISS data will be unified.
-
-    The reasons are:
-
-    - Because the procedure to first check the value of an `_Availability` node and then determine whether an API call is allowed is complicated. It is simpler to execute an API call and receive an error when the call is unavailable (Unavailable), and this also reduces the number of API accesses by avoiding pre-checks.  
-    - When adding new VSS nodes (adding new equipment definitions), `_Availability` nodes must also be added at the same time. This increases the cost of adding VSS nodes and bloats the size of the VSS tree.
+    In addition, when an application issues a `Set` request to a signal whose `is_available_actuator` is `false`, the Yoriito VISS Server rejects the request with `ERROR_SERVICE_UNAVAILABLE`.  
+    Therefore, applications do not need to check Availability before every API call; they can simply execute the API call and handle the error when the signal is unavailable.
 
 #### 2-5-4. Conditions Under Which Availability Changes  
 
@@ -316,7 +296,8 @@ Errors that occur in communication with the VISS Server conform to the COVESA VI
 - **ERROR_UNAUTHORIZED (401)**: The access token is invalid.  
 - **ERROR_FORBIDDEN (403)**: The server refused to execute the request.  
 - **ERROR_NOT_FOUND (404)**: The requested data was not found.  
-- **ERROR_REQUEST_TIMEOUT (408)**: The request timed out.  
+- **ERROR_REQUEST_TIMEOUT (408)**: Subscribe duration limit exceeded.  
+- **ERROR_UNSPECIFIED (409)**: Parameter is unspecified.  
 - **ERROR_TOO_MANY_REQUESTS (429)**: Rate limiting due to too many requests.  
 - **ERROR_INTERNAL_SERVER_ERROR (500)**: An internal error occurred in the server.  
 - **ERROR_BAD_GATEWAY (502)**: The response from the upstream server is invalid.  
@@ -332,6 +313,7 @@ Errors that are completed within the API are defined based on Linux `errno`.
 - **ERROR_ACCES (13)**: No permission.  
 - **ERROR_INVAL (22)**: Invalid argument.  
 - **ERROR_NODATA (61)**: Data does not exist.  
+- **ERROR_BADMSG (74)**: Bad message.  
 - **ERROR_TIMEDOUT (110)**: The operation timed out.  
 - **ERROR_CONNREFUSED (111)**: Connection refused.  
 - **ERROR_CANCELED (125)**: Operation was canceled.  
@@ -369,7 +351,7 @@ PAL detects errors that originate in the state, communication, and equipment sta
 - Sensor failures, actuator failures.  
 - Errors related to Capability/Availability (e.g., below safety thresholds, priority conflicts, invocation limits, battery conditions).
 
-These errors are mapped to the error vocabulary defined by the DataBroker Producer API and propagated through the Yoriito VISS Server to the Yoriito Signal API and the application.
+These conditions are conveyed as the Availability (`is_available_sensor` / `is_available_actuator`) defined by the DataBroker Producer API and propagated through the Yoriito VISS Server to the Yoriito Signal API and the application.
 
 The figure summarizing the error handling flow at each layer is as follows:  
 
