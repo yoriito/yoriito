@@ -10,9 +10,8 @@ chapter_no: 5
 
 ### {{ h3_sec("Introduction") }}
 
-In this tutorial, you will learn how to use the Yoriito Signal API through sample code and a sample application. By running the development environment you built in Chapter 4, you can experience application development using the Yoriito Signal API.
-
-
+In this tutorial, you will learn how to use the Yoriito Signal API through sample code, and build a sample application with it.
+By running the development environment you built in [Chapter 4](../04_environment_setup/04_environment_setup.md), you can experience application development using the Yoriito Signal API.
 
 ### {{ h3_sec("Basics") }}
 
@@ -29,7 +28,7 @@ This section shows sample code for each of these.
 
 For more details on the Yoriito Signal API, see ["2. System Configuration/Scope/Versioning"](../02_system_scope_versioning/02_system_scope_versioning.md). For more details on VSS, see ["3. VSS/VISS"](../03_VSS_VISS/03_vss_viss.md).
 
-Try running and modifying the sample code, and apply it to your own application development. To check the behavior of the sample code, make sure to start the simulator first by following "4-7. Start the simulator".
+Try running and modifying the sample code, and apply it to your own application development. To check the behavior of the sample code, make sure to start the simulator first by following "4-6. Start the simulator".
 
 #### {{ h4_sec("Check the current state of the high beam: Get") }}
 
@@ -54,33 +53,35 @@ constexpr int kExitNg = 1;
 int main() {
   YORIITO_LOG_INITIALIZE("get");
 
-  yoriito::Result<bool> result =
-      yoriito::vehicle::body::lights::beam::high::ison::Get();
+  auto result = yoriito::vehicle::body::lights::beam::high::ison::Get();
 
   if (result.IsErr()) {
     auto err = result.TakeErr();
-    YORIITO_LOG_INFO("get", std::string("Get failed: ") + err->Message() +
-                               " (code=" + std::to_string(err->ErrorCode()) +
-                               ")");
+    YORIITO_LOG_ERROR("get", std::string("Get failed: ") + err->Message() +
+                                 " (code=" + std::to_string(err->ErrorCode()) +
+                                 ")");
+    YORIITO_LOG_FINALIZE();
     return kExitNg;
   }
 
-  auto value = result.TakeOk().value();
+  auto data_point = result.TakeOk().value();
+  const bool value = data_point.GetData();
 
   YORIITO_LOG_INFO("get",
-                  std::string("Get succeed: ") + (value ? "true" : "false"));
+                   std::string("Get succeeded: ") + (value ? "true" : "false"));
 
+  YORIITO_LOG_FINALIZE();
   return kExitOk;
 }
 ```
 
 **Build & run steps**  
 
-1. Start the simulator if it is not running yet. Running `./init_pal.sh` takes about 3–5 minutes.
+1. Start the simulator if it is not running yet.
 
     ```shell
     $ cd /work/ref_pal
-    $ npm install
+    $ npm ci
     $ ./init_pal.sh
     $ npx electron . --no-sandbox
     ```
@@ -97,16 +98,10 @@ int main() {
 
     ```shell
     $ ./build/get
-    [Wed Feb 25 06:19:03 2026] [INFO] Get succeed: false
     ```
 
 !!! info
-    If you see output like the following, try running `./init_pal.sh`:
-    ```shell
-    $ ./build/get 
-    2026-02-25T06:14:00.747Z,2372,139765197864256,SAPI_SignalAPI,ERROR,Get,42,No data.
-    [Wed Feb 25 06:14:00 2026] [ERROR] Get failed: No data. (code=61)
-    ```
+    If the command fails with a `No data` error, rerun `./init_pal.sh` to initialize the signal data, then retry the command.
 
 **Example use cases**  
 
@@ -142,26 +137,28 @@ int main() {
 
   if (set_result.IsErr()) {
     const yoriito::Result<void>::ErrorPtr err = set_result.TakeErr();
-    YORIITO_LOG_INFO("set", std::string("Set failed: ") + err->Message() +
-                               " (code=" + std::to_string(err->ErrorCode()) +
-                               ")");
+    YORIITO_LOG_ERROR("set", std::string("Set failed: ") + err->Message() +
+                                 " (code=" + std::to_string(err->ErrorCode()) +
+                                 ")");
+    YORIITO_LOG_FINALIZE();
     return kExitNg;
   }
 
-  YORIITO_LOG_INFO("set",
-                  std::string("Set succeed: ") + (is_on ? "true" : "false"));
+  YORIITO_LOG_INFO(
+      "set", std::string("Set succeeded: ") + (is_on ? "true" : "false"));
 
+  YORIITO_LOG_FINALIZE();
   return kExitOk;
 }
 ```
 
 **Build & run steps**  
 
-1. Start the simulator if it is not running yet. Running `./init_pal.sh` takes about 3–5 minutes.
+1. Start the simulator if it is not running yet.
 
     ```shell
     $ cd /work/ref_pal
-    $ npm install
+    $ npm ci
     $ ./init_pal.sh
     $ npx electron . --no-sandbox
     ```
@@ -178,28 +175,23 @@ int main() {
 
     ```shell
     $ ./build/set
-    [Wed Feb 25 06:29:32 2026] [INFO] Set succeed: true
     ```
 
 !!! info
-    If you see output like the following, try running `./init_pal.sh`:
-    ```shell
-    $ ./build/set 
-    2026-02-25T06:49:44.130Z,6448,140108347792704,SAPI_SignalAPI,ERROR,Set,92,No data.
-    [Wed Feb 25 06:49:44 2026] [ERROR] Set failed: No data. (code=61)
-    ```
+    If the command fails with a `No data` error, rerun `./init_pal.sh` to initialize the signal data, then retry the command.
 
 **Example use cases**  
 
 - Control vehicle functions based on user operations
     - e.g., high beam ON/OFF, A/C temperature setting, seat heater ON/OFF etc.
 
-#### {{ h4_sec("Receive high-beam state changes: Subscribe") }}
+#### {{ h4_sec("Receive a high-beam state change: Subscribe") }}
 
 **What is `Subscribe`?**  
 
 - `Subscribe` is used when you want to continuously receive changes in the current value.
 - You can call `Subscribe` for signals whose type is Actuator / Sensor.
+- In this sample, the application waits for one high-beam state update, outputs the received value, and then calls `UnSubscribe` to end the subscription.
 
 **Sample code** (`yoriito-tutorial/tutorial/subscribe/src/main.cc`)
 
@@ -210,55 +202,67 @@ int main() {
 namespace {
 constexpr int kExitOk = 0;
 constexpr int kExitNg = 1;
+
+namespace high_beam = yoriito::vehicle::body::lights::beam::high::ison;
 } // namespace
 
 int main() {
   YORIITO_LOG_INITIALIZE("subscribe");
-  auto sub_result =
-      yoriito::vehicle::body::lights::beam::high::ison::Subscribe();
 
-  if (sub_result.IsErr()) {
-    auto err = sub_result.TakeErr();
-    YORIITO_LOG_INFO("subscribe",
-                    std::string("Subscribe failed: ") + err->Message() +
-                        " (code=" + std::to_string(err->ErrorCode()) + ")");
+  auto subscribe_result = high_beam::Subscribe();
+  if (subscribe_result.IsErr()) {
+    auto error = subscribe_result.TakeErr();
+    YORIITO_LOG_ERROR("subscribe",
+                      std::string("Subscribe failed: ") + error->Message() +
+                          " (code=" + std::to_string(error->ErrorCode()) + ")");
+    YORIITO_LOG_FINALIZE();
     return kExitNg;
   }
 
-  auto subscription_context = sub_result.TakeOk().value();
-  YORIITO_LOG_INFO("subscribe", "Subscribe succeeded. Waiting for updates...");
+  auto subscription_context = subscribe_result.TakeOk().value();
+  YORIITO_LOG_INFO("subscribe", "Waiting for one update...");
 
-  while (true) {
-    auto msg_result = subscription_context->Messages();
-    if (msg_result.IsErr()) {
-      auto err = msg_result.TakeErr();
-      YORIITO_LOG_INFO("subscribe",
-                      std::string("Messages() failed: ") + err->Message() +
-                          " (code=" + std::to_string(err->ErrorCode()) + ")");
-      break;
-    }
+  int exit_code = kExitOk;
 
-    auto response = msg_result.TakeOk().value();
-    const auto &data_points = response.GetDataPoints();
-    const auto &data_point = data_points.front();
-    auto data = data_point.GetData();
-    const bool is_on = std::get<bool>(data);
+  auto message_result = subscription_context.Messages();
+  if (message_result.IsErr()) {
+    auto error = message_result.TakeErr();
+    YORIITO_LOG_ERROR("subscribe",
+                      std::string("Messages() failed: ") + error->Message() +
+                          " (code=" + std::to_string(error->ErrorCode()) + ")");
+    exit_code = kExitNg;
+  } else {
+    auto data_point = message_result.TakeOk().value();
+    const bool is_on = data_point.GetData();
 
-    YORIITO_LOG_INFO("subscribe",
-                    std::string("IsOn updated: ") + (is_on ? "true" : "false"));
+    YORIITO_LOG_INFO("subscribe", std::string("IsOn updated: ") +
+                                      (is_on ? "true" : "false"));
   }
 
-  return kExitOk;
+  auto unsubscribe_result =
+      high_beam::UnSubscribe(std::move(subscription_context));
+  if (unsubscribe_result.IsErr()) {
+    auto error = unsubscribe_result.TakeErr();
+    YORIITO_LOG_ERROR("subscribe",
+                      std::string("UnSubscribe failed: ") + error->Message() +
+                          " (code=" + std::to_string(error->ErrorCode()) + ")");
+    exit_code = kExitNg;
+  } else {
+    YORIITO_LOG_INFO("subscribe", "UnSubscribe succeeded.");
+  }
+
+  YORIITO_LOG_FINALIZE();
+  return exit_code;
 }
 ```
 
 **Build & run steps**  
 
-1. Start the simulator if it is not running yet. Running `./init_pal.sh` takes about 3–5 minutes.
+1. Start the simulator if it is not running yet.
 
     ```shell
     $ cd /work/ref_pal
-    $ npm install
+    $ npm ci
     $ ./init_pal.sh
     $ npx electron . --no-sandbox
     ```
@@ -279,8 +283,8 @@ int main() {
     - First, run `Subscribe`:
 
         ```shell
+        $ cd /work/tutorial/subscribe
         $ ./build/subscribe 
-        [Wed Feb 25 06:53:54 2026] [INFO] Subscribe succeeded. Waiting for updates...
         ```
 
     - Then, in another terminal, run `Set`:
@@ -290,21 +294,10 @@ int main() {
         $ ./build/set
         ```
 
-    - You should see updates on the `Subscribe` side like:
-
-        ```shell
-        $ ./build/subscribe
-        [Wed Feb 25 06:53:54 2026] [INFO] Subscribe succeeded. Waiting for updates...
-        [Wed Feb 25 06:59:32 2026] [INFO] IsOn updated: true
-        ```
+    - After `Set` runs, the `Subscribe` process receives one update, unsubscribes, and exits.
 
 !!! info
-    If you see output like the following, try running `./init_pal.sh`:
-    ```shell
-    $ ./build/subscribe 
-    2026-02-25T06:49:44.130Z,6448,140108347792704,SAPI_SignalAPI,ERROR,Subscribe,92,No data.
-    [Wed Feb 25 06:49:44 2026] [ERROR] Subscribe failed: No data. (code=61)
-    ```
+    If the command fails with a `No data` error, rerun `./init_pal.sh` to initialize the signal data, then retry the command.
 
 **Example use cases**
 
@@ -318,11 +311,12 @@ int main() {
 
 In the Basics section, you learned how to obtain and control vehicle signals using `Get` / `Set` / `Subscribe` of the Yoriito Signal API. In the Advanced section, you will learn concepts needed to develop more realistic applications, along with sample code.
 
-#### {{ h4_sec("Check whether the high beam is available: Availability") }}
+#### {{ h4_sec("Check whether the front fog light is available: Availability") }}
 
 **What is `Availability`?**
 
-- In the Basics section, sample code for `Set` / `Get` / `Subscribe` assumed that the high-beam signal is available.
+- In the Basics section, sample code for `Get` / `Set` / `Subscribe` assumed that the high-beam signal is available.
+- In this section, the sample code checks the availability of the front fog light as both a sensor and an actuator.
 - In real vehicles, however, a signal may or may not be usable depending on the vehicle state and conditions. A function may be available on one vehicle but not on another.
 - To inform applications of these differences, `Availability` is provided to represent whether a signal is usable.
 - Availability takes either `true` or `false`:
@@ -333,7 +327,7 @@ In the Basics section, you learned how to obtain and control vehicle signals usi
         - Indicates whether the current value can be obtained via `Get`.
     - `Availability_Actuator`  
         - Indicates whether the target value can be set via `Set`.
-- For more details on Availability, see "2-5. System behavior".
+- For more details on Availability, see ["2-5. System Behavior"](../02_system_scope_versioning/02_system_scope_versioning.md#2-5-system-behavior).
 
 **Sample code** (`yoriito-tutorial/tutorial/availability/src/main.cc`)
 
@@ -348,33 +342,40 @@ constexpr int kExitNg = 1;
 
 int main() {
   YORIITO_LOG_INITIALIZE("availability");
-  yoriito::Result<bool> result = yoriito::vehicle::body::lights::fog::front::
-      ison_availability_sensor::Get();
+  auto result = yoriito::vehicle::body::lights::fog::front::ison::Get();
 
   if (result.IsErr()) {
     auto err = result.TakeErr();
-    YORIITO_LOG_INFO("availability",
-                    std::string("Get failed: ") + err->Message() +
-                        " (code=" + std::to_string(err->ErrorCode()) + ")");
+    YORIITO_LOG_ERROR("availability",
+                      std::string("Get failed: ") + err->Message() +
+                          " (code=" + std::to_string(err->ErrorCode()) + ")");
+    YORIITO_LOG_FINALIZE();
     return kExitNg;
   }
 
-  auto value = result.TakeOk().value();
+  auto data_point = result.TakeOk().value();
+  const bool is_available_sensor = data_point.IsAvailableSensor();
+  const bool is_available_actuator = data_point.IsAvailableActuator();
 
   YORIITO_LOG_INFO("availability",
-                  std::string("Get succeed: ") + (value ? "true" : "false"));
+                   std::string("Available Sensor: ") +
+                       (is_available_sensor ? "true" : "false"));
+  YORIITO_LOG_INFO("availability",
+                   std::string("Available Actuator: ") +
+                       (is_available_actuator ? "true" : "false"));
 
+  YORIITO_LOG_FINALIZE();
   return kExitOk;
 }
 ```
 
 **Build & run steps**  
 
-1. Start the simulator if it is not running yet. Running `./init_pal.sh` takes about 3–5 minutes.
+1. Start the simulator if it is not running yet.
 
     ```shell
     $ cd /work/ref_pal
-    $ npm install
+    $ npm ci
     $ ./init_pal.sh
     $ npx electron . --no-sandbox
     ```
@@ -391,11 +392,10 @@ int main() {
 
     ```shell
     $ ./build/availability
-    [Wed Feb 25 10:13:14 2026] [INFO] Get succeed: true
     ```
 
 !!! tip
-    Try changing the signal in the sample code to another one, then rebuild and run. For example, if you change it to `yoriito::vehicle::body::lights::fog::front::ison_availability_sensor`, it should output `false`.
+    Try changing the signal in the sample code to another one, then rebuild and run. For example, if you change it to `yoriito::vehicle::body::lights::beam::high::ison`, both sensor and actuator availability should be `true`.
 
 
 **Example use cases**
@@ -451,26 +451,27 @@ constexpr int kExitNg = 1;
 int main() {
   YORIITO_LOG_INITIALIZE("inspect");
 
-  yoriito::Result<yoriito::databroker::ConsumerInspectResponse> result =
-      yoriito::vehicle::body::lights::beam::high::ison::Inspect();
+  auto result = yoriito::vehicle::body::lights::beam::high::ison::Inspect();
 
   if (result.IsErr()) {
     auto err = result.TakeErr();
-    YORIITO_LOG_INFO("inspect",
-                    std::string("Inspect failed: ") + err->Message() +
-                        " (code=" + std::to_string(err->ErrorCode()) + ")");
+    YORIITO_LOG_ERROR("inspect",
+                      std::string("Inspect failed: ") + err->Message() +
+                          " (code=" + std::to_string(err->ErrorCode()) + ")");
+    YORIITO_LOG_FINALIZE();
     return kExitNg;
   }
 
   auto inspect_response = result.TakeOk().value();
+  auto data_points = inspect_response.GetDataPoints();
 
-  if (inspect_response.GetDataPoints().empty()) {
-    YORIITO_LOG_INFO("inspect", "Inspect failed: No data points returned.");
+  if (data_points.empty()) {
+    YORIITO_LOG_ERROR("inspect", "Inspect failed: No data points returned.");
+    YORIITO_LOG_FINALIZE();
     return kExitNg;
   }
 
-  const yoriito::databroker::ConsumerInspectData &inspect_data =
-      inspect_response.GetDataPoints().front();
+  const auto &inspect_data = data_points.front();
 
   const auto &path = inspect_data.GetPath();
   // const auto &data_type = inspect_data.GetDataType();
@@ -487,21 +488,22 @@ int main() {
   // const auto &pattern = inspect_data.GetPattern();
   // const auto &custom_attributes = inspect_data.GetCustomAttributes();
 
-  YORIITO_LOG_INFO("inspect", "Inspect succeed");
+  YORIITO_LOG_INFO("inspect", "Inspect succeeded");
   YORIITO_LOG_INFO("inspect", std::string("Path: ") + path);
   YORIITO_LOG_INFO("inspect", std::string("Description: ") + description);
 
+  YORIITO_LOG_FINALIZE();
   return kExitOk;
 }
 ```
 
 **Build & run steps**  
 
-1. Start the simulator if it is not running yet. Running `./init_pal.sh` takes about 3–5 minutes.
+1. Start the simulator if it is not running yet.
 
     ```shell
     $ cd /work/ref_pal
-    $ npm install
+    $ npm ci
     $ ./init_pal.sh
     $ npx electron . --no-sandbox
     ```
@@ -518,9 +520,6 @@ int main() {
 
     ```shell
     $ ./build/inspect 
-    [Wed Feb 25 10:58:35 2026] [INFO] Inspect succeed
-    [Wed Feb 25 10:58:35 2026] [INFO] Path: Vehicle.Body.Lights.Beam.High.IsOn
-    [Wed Feb 25 10:58:35 2026] [INFO] Description: Indicates if light is on or off. True = On. False = Off.
     ```
 
 **Example use cases**
@@ -530,7 +529,7 @@ Inspect is mainly used in the following situations:
 - Check before sending operation requests
     - Confirm that the value to be set is within the min/max range of the signal.
 - GUI control
-    - Display min/max values for temperature settings or window opening degree.
+    - Display min/max values for temperature settings or window opening percentage.
     - Prevent users from setting values outside the valid range.
 - Support multiple vehicle types
     - Obtain the correct range even when controllable ranges differ across vehicle types and equipment.
@@ -545,17 +544,17 @@ For this purpose, a Text User Interface is provided. For usage, see "Connect vsh
 
 ### {{ h3_sec("Troubleshooting") }}
 
-#### {{ h4_sec('"Tools or libraries not found" errors occur') }}
+#### {{ h4_sec('"Tools or libraries not found" errors') }}
 
 - Cause  
     You may be running commands in the host environment instead of inside the container.
 
 - Countermeasure  
-    - Start the container as described in ["4-6. Start the container"](../04_environment_setup/04_environment_setup.md) and run commands in a terminal inside the container.  
+    - Start the container as described in ["4-5. Start the container"](../04_environment_setup/04_environment_setup.md) and run commands in a terminal inside the container.
     - All required tools and libraries are already installed in the container.
     
 
-#### {{ h4_sec('Error saying "Cannot connect to `localhost (127.0.0.1)`"') }}
+#### {{ h4_sec('"Cannot connect to `localhost (127.0.0.1)`" error') }}
 
 - Cause  
     Even local communication (`localhost` / `127.0.0.1`) may be routed through a proxy, which can prevent a proper connection to `localhost`.
@@ -569,7 +568,7 @@ For this purpose, a Text User Interface is provided. For usage, see "Connect vsh
         $ export NO_PROXY=127.0.0.1,localhost  
         ```
 
-    - If this resolves the issue, add `remoteEnv` to `.devcontainer/devcontainer.json` so that the setting  persists after restarting the container. After changing the settings, rebuild the Dev Container.
+    - If this resolves the issue, add `remoteEnv` to `.devcontainer/devcontainer.json` so that the setting persists after restarting the container. After changing the settings, rebuild the Dev Container.
 
         ```json
         "remoteEnv": {

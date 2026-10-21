@@ -2,7 +2,4 @@
 * @yoriito/tech-organizer @yoriito/oss-promotion-team
 
 ### Reviewers for specific directories or files.
-/docs/               @yoriito/oss-promotion-team
-/docs/tutorials/     @yoriito/tutorial-development-team @yoriito/oss-promotion-team
-/docs/design/        @yoriito/oss-promotion-team
-/quality/            @yoriito/oss-promotion-team
+/docs/tutorials/     @yoriito/tutorial-development-team

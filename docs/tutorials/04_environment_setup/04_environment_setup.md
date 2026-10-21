@@ -60,8 +60,7 @@ The recommended operating environment is as follows:
 
     ```shell
     $ cd yoriito-tutorial
-    $ git submodule init
-    $ git submodule update
+    $ git submodule update --init --recursive
     ```
 
 
@@ -81,6 +80,8 @@ Yoriito repositories typically support dev containers. In this section, you will
 
 1. The container will be built and various libraries will be installed.
 
+1. After VS Code reopens in the development container, open a terminal inside the container. Run all commands in this chapter and subsequent chapters from this terminal.
+
 !!! info
     A video is also available as a reference.
 
@@ -91,7 +92,7 @@ Yoriito repositories typically support dev containers. In this section, you will
 
 ### {{ h3_sec("Start the Simulator") }}
 
-This section explains how to start the simulator, which allows you to simulate actual vehicle behavior throughout the tutorial.
+This section explains how to start the simulator used to reproduce actual vehicle behavior throughout the tutorial.
 
 1. Move to the ref_pal directory.  
 
@@ -102,10 +103,7 @@ This section explains how to start the simulator, which allows you to simulate a
 1. Run the following commands.  
 
     ```shell
-    $ npm install
+    $ npm ci
     $ ./init_pal.sh
     $ npx electron . --no-sandbox
     ```
-
-!!! info  
-    `./init_pal.sh` takes about 3–5 minutes to complete.
