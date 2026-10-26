@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../assets/yoriito.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
     
     
   
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.618322db.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1144,7 +1144,7 @@
 <p><strong><u>Yoriito Signal API</u></strong>  </p>
 <ul>
 <li>This is the vehicle‑oriented API used from the Headless Application.  </li>
-<li>The API is provided as shared libraries named <code>libyoriito_api_***.so</code>.</li>
+<li>The API is provided as shared libraries named <code>libyoriito_vehicle_api_&lt;domain&gt;.so</code>.</li>
 </ul>
 <p><strong><u>Yoriito VISS Server</u></strong>  </p>
 <ul>
@@ -1160,6 +1160,7 @@
 <p>The sample application features an emergency button. When you press the emergency button in the app, windows and doors close, and lights turn on.</p>
 <p><img alt="emergency_app_v1-20260129-092341" src="../assets/emergency_app_v1-20260129-092341.gif" /></p>
 <h3 id="6-4-verify-the-app-behavior">6-4. Verify the App Behavior</h3>
+<p>Run all commands in this section in terminals inside the development container configured in <a href="../../04_environment_setup/04_environment_setup/">"4. Setting Up the Application Development Environment"</a>.</p>
 <ol>
 <li>
 <p>Start the simulator (PAL)  </p>
@@ -1170,8 +1171,8 @@
 </code></pre></div></p>
 </li>
 <li>
-<p>Run the following commands (note that <code>./init_pal.sh</code> takes about 3–5 minutes).
-    <div class="highlight"><pre><span></span><code>$<span class="w"> </span>npm<span class="w"> </span>install
+<p>Run the following commands.
+    <div class="highlight"><pre><span></span><code>$<span class="w"> </span>npm<span class="w"> </span>ci
 $<span class="w"> </span>./init_pal.sh
 $<span class="w"> </span>npx<span class="w"> </span>electron<span class="w"> </span>.<span class="w"> </span>--no-sandbox
 </code></pre></div></p>
@@ -1189,7 +1190,7 @@ $<span class="w"> </span>npx<span class="w"> </span>electron<span class="w"> </s
 <li>
 <p>Build the application.
     <div class="highlight"><pre><span></span><code>$<span class="w"> </span>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>
-$<span class="w"> </span>cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span>-j
+$<span class="w"> </span>cmake<span class="w"> </span>--build<span class="w"> </span>build
 </code></pre></div></p>
 </li>
 <li>
@@ -1354,11 +1355,11 @@ $<span class="w"> </span>flutter<span class="w"> </span>run<span class="w"> </sp
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "content.code.copy", "search.suggest", "search.highlight", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "content.code.copy", "search.suggest", "search.highlight", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
   
-      <script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   <script src="../../../assets/javascripts/custom.js"></script>

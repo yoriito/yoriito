@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../assets/yoriito.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
     
     
   
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.618322db.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1325,13 +1325,12 @@ While VSS defines "what data exists," VISS defines "how to access that data."</p
 <p>Based on the generic vehicle signal tree defined by COVESA VSS, Yoriito VSS performs additions of necessary signals, removal of unnecessary signals, and normalization (cleanup) of meanings and structures for the Vehicle API.</p>
 <h5 id="how-to-obtain-and-inspect-yoriito-vss">How to obtain and inspect Yoriito VSS</h5>
 <p>Clone the following repository: https://github.com/yoriito/yoriito-vss.git</p>
-<p>Like COVESA VSS, Yoriito VSS can be exported in tree or CSV format using the VSS tool.
+<p>The repository already contains the generated Yoriito VSS under <code>artifact/</code>, exported in several formats.
 In particular, CSV format is highly readable when you need to check signal units and descriptions.</p>
-<p>Example command to export Yoriito VSS in CSV format:</p>
-<p><div class="highlight"><pre><span></span><code>vspec<span class="w"> </span><span class="nb">export</span><span class="w"> </span>csv<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--vspec<span class="w"> </span>./vehicle_signal_specification/spec/VehicleSignalSpecification.vspec<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="k">$(</span>find<span class="w"> </span>./vss<span class="w"> </span>-name<span class="w"> </span><span class="s1">&#39;*.vspec&#39;</span><span class="w"> </span>-exec<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>--overlays<span class="w"> </span><span class="o">{}</span><span class="w"> </span><span class="se">\;</span><span class="k">)</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--output<span class="w"> </span>Yoriito_vss_v5.0.csv
+<p>The overlay vspec files are stored under <code>vss/</code>, and COVESA VSS is referenced as the git submodule <code>external/vehicle_signal_specification</code>.
+To regenerate the artifacts yourself, run the script provided in the repository, which runs <code>vspec export</code> with all overlays (vss-tools or pipx is required):</p>
+<p><div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>yoriito-vss
+./scripts/create_vspec.sh
 </code></pre></div>
 For details on how to use the VSS tool, see: https://covesa.github.io/vehicle_signal_specification/ecosystem/tools/index.html</p>
 <h5 id="differences-between-covesa-vss-and-yoriito-vss">Differences between COVESA VSS and Yoriito VSS</h5>
@@ -1484,7 +1483,7 @@ each OEM that uses Yoriito VSS can extend it to create its own OEM VSS.</p>
 </ul>
 <p>As long as changes follow the above rules, the Yoriito VISS Server and Vehicle API libraries will function correctly.
 For overlays that do not follow these rules, the Yoriito Vehicle API cannot guarantee correct behavior of its deliverables, so users must handle them on their own.</p>
-<h3 id="3-4-2-about-yoriito-viss">3-4-2. About Yoriito VISS</h3>
+<h4 id="3-4-2-about-yoriito-viss">3-4-2. About Yoriito VISS</h4>
 <p>In the architecture of the Yoriito Vehicle API, the Yoriito VISS Server (kura) plays a central role. It manages the VSS tree and acts as a "data hub" connecting the upper layers (Yoriito Signal API / applications) and the lower layers (PAL / vehicle platform).</p>
 <p><img alt="Yoriito_VISS_Overview" src="../assets/Yoriito_VISS_Overview.drawio.svg" /></p>
 <p align="center"><em>Figure: Yoriito VISS Overview</em></p>
@@ -1548,7 +1547,7 @@ For overlays that do not follow these rules, the Yoriito Vehicle API cannot guar
 </tr>
 <tr>
 <td>Transport</td>
-<td>WebSocket, HTTP, MQTT are mandatory; gRPC is optional</td>
+<td>WebSocket, HTTP, MQTT, gRPC; at least one must be supported</td>
 <td>Specialized for gRPC</td>
 </tr>
 <tr>
@@ -1594,8 +1593,8 @@ This separation brings the following benefits:</p>
   By providing standardized interfaces not only for applications but also for PAL, PAL responsibilities become clearer and PAL can be reused more easily.  </li>
 </ul>
 <h6 id="transport-protocol">Transport protocol</h6>
-<p>COVESA VISS v3 defines WebSocket and HTTP as mandatory, and MQTT and gRPC as optional.<br />
-In contrast, Yoriito VISS adopts <strong>only gRPC</strong> as the transport protocol.</p>
+<p>COVESA VISS v2 required servers to support HTTP and WebSocket. COVESA VISS v3 lists WebSocket, HTTP, MQTT, gRPC and requires that at least one of them be supported.<br />
+Yoriito VISS adopts <strong>only gRPC</strong> as the transport protocol.</p>
 <p>Reasons for choosing gRPC include:</p>
 <ul>
 <li><strong>Performance</strong>:<br />
@@ -1701,19 +1700,19 @@ In contrast, Yoriito VISS adopts <strong>only gRPC</strong> as the transport pro
 </tbody>
 </table>
 <h6 id="yoriito-viss-specific-extensions-inspect-define-delete">Yoriito VISS-specific extensions: Inspect / Define / Delete</h6>
-<p>Yoriito VISS introduces the following RPC methods that do not exist in COVESA VISS v3:</p>
+<p>Yoriito VISS introduces the following dedicated RPC methods:</p>
 <ul>
 <li><strong>Inspect</strong>: <br />
-  Retrieves metadata of VSS nodes (data type, unit, description, etc.). Available in both Consumer and Producer Services.  </li>
+  Retrieves metadata of VSS nodes (data type, unit, description, etc.). Available in both Consumer and Producer Services. In COVESA VISS v3 the same information is obtained through <code>Get</code> with the <code>metadata</code> filter (signal discovery); Yoriito VISS provides it as a separate RPC.</li>
 <li><strong>Define</strong>:<br />
   Adds VSS node definitions at runtime. Used by PAL to register needed signals in the VISS Server according to the vehicle platform configuration (Producer Service only).  </li>
 <li><strong>Delete</strong>:<br />
   Deletes defined VSS nodes (Producer Service only).  </li>
 </ul>
-<p>With Define / Delete, it becomes possible to modify static VSS definitions files on already released vehicles after deployment.<br />
+<p>With Define / Delete, it becomes possible to modify VSS node definitions on already released vehicles after deployment.<br />
 This allows flexible construction of the VSS tree as vehicles and software evolve.</p>
 <blockquote>
-<p>Note: Define/Delete are currently under development and not yet available.</p>
+<p>Note: Define / Delete are implemented in Kura and in the Yoriito VISS Producer Library (<code>DataBrokerProducer::Define</code> / <code>Delete</code>). The "initializable state" (<code>Server.Initializing</code>) described in the Yoriito VISS design documentation is not implemented in Kura yet; Define / Delete can be called at any time.</p>
 </blockquote>
 <h6 id="message-schema-differences">Message schema differences</h6>
 <p>COVESA VISS v3 defines message formats using JSON Schema. Yoriito VISS defines them with Protocol Buffers (<code>.proto</code> files), with characteristics such as:</p>
@@ -1744,7 +1743,7 @@ This allows control of which data can be accessed by applications and PAL:</p>
 <p>For some metadata attributes in COVESA VSS, Yoriito VISS simplifies implementation to improve practicality:</p>
 <ul>
 <li><code>pattern</code>: Only supports string arrays (a single string is treated as an array of one element).  </li>
-<li><code>max</code> / <code>min</code>: Only <code>int32</code> type is supported (sufficient for practical ranges).  </li>
+<li><code>max</code> / <code>min</code>: Expressed as <code>ValueType</code>, so they follow the data type of the signal.  </li>
 <li><code>allowed</code>: Only string arrays are supported (enumeration values expressed as strings).</li>
 </ul>
 <h6 id="filter-differences">Filter differences</h6>
@@ -1791,7 +1790,7 @@ This allows stronger integration with static typing.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="3-4-3-how-viss-is-involved-in-this-tutorial">3-4-3. How VISS is involved in this tutorial</h3>
+<h4 id="3-4-3-how-viss-is-involved-in-this-tutorial">3-4-3. How VISS is involved in this tutorial</h4>
 <p>In this tutorial—especially in application development using the Yoriito Signal API—developers will rarely need to construct or parse VISS messages directly, because the Yoriito Signal API abstracts away the details of VISS.</p>
 <p>However, understanding the following points will be helpful:</p>
 <ul>
@@ -1893,11 +1892,11 @@ This allows stronger integration with static typing.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "content.code.copy", "search.suggest", "search.highlight", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "content.code.copy", "search.suggest", "search.highlight", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
   
-      <script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   <script src="../../../assets/javascripts/custom.js"></script>

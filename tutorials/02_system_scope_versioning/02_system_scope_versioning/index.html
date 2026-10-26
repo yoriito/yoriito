@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../assets/yoriito.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
     
     
   
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.618322db.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1205,7 +1205,7 @@ In the Yoriito Vehicle API, the Yoriito VISS Server sits at the center of the sy
 <li><strong>Yoriito VISS Producer Library</strong><br />
   An implementation of the DataBroker Producer API that provides the access method to the Yoriito VISS Server as the concrete communication backend. As with the Consumer Library, it wraps client-side implementations generated from the Yoriito VISS schema and provides them as an easy-to-use interface.</li>
 </ul>
-<p>Because only the PAL implementation directly uses the DataBroker Consumer/Producer API, the DataBroker Consumer/Producer API is sometimes collectively referred to as the <strong>PAL API</strong>.<br />
+<p>Because only the PAL implementation directly uses the DataBroker Producer API, the DataBroker Producer API is sometimes collectively referred to as the <strong>PAL API</strong>.<br />
 Details of these APIs and VSS/VISS are explained in "<a href="../../03_VSS_VISS/03_vss_viss/">3. VSS/VISS</a>".</p>
 <p>The <strong>Yoriito Signal API</strong> further abstracts the DataBroker Consumer API to provide an API that can handle data as vehicle signals. As mentioned above, applications directly use the Yoriito Signal API; the DataBroker Consumer API is generally not used directly from applications.<br />
 The Yoriito Signal API is generated from the complete set of vehicle signal definitions defined by Yoriito VSS and covers all signal definitions supported by the Yoriito Vehicle API.</p>
@@ -1304,7 +1304,7 @@ By clearly defining these concepts as a "contract", application developers can h
 <p>To allow applications to correctly recognize Capability, OEMs must predefine the VSS tree for each vehicle and remove VSS nodes that do not exist as equipment/functions.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>For VSS/VISS, see "<a href="../../03_VSS_VISS/03_vss_viss/">3. VSS/VISS</a>".</p>
+<p>For VSS/VISS, see "<a href="../../03_VSS_VISS/03_vss_viss/">3. Introduction to VSS/VISS</a>".</p>
 </div>
 <p>Typical use cases of Capability include:</p>
 <ul>
@@ -1336,27 +1336,12 @@ By clearly defining these concepts as a "contract", application developers can h
 <li>Gray out door open/close UI while the vehicle is running.</li>
 </ul>
 <div class="admonition warning">
-<p class="admonition-title">Current implementation and future direction</p>
-<p>Currently, Availability is expressed in two ways.</p>
-<p>The first is as a kind of VSS node.</p>
+<p class="admonition-title">Current implementation</p>
+<p>Availability is expressed as data within VISS.</p>
 <details class="note" open="open">
 <summary>Note</summary>
 <p>For VSS/VISS, see "<a href="../../03_VSS_VISS/03_vss_viss/">3. VSS/VISS</a>".</p>
 </details>
-<p>If a piece of equipment/function can be controlled as an actuator,<br>
-a node with the suffix <code>_Availability_Actuator</code> is implemented.<br>
-If it can supply data as a sensor, a node with the suffix <code>_Availability_Sensor</code> is implemented.</p>
-<ul>
-<li>Example:  <ul>
-<li>Original node: <code>Vehicle.Cabin.Door.IsOpen</code>  </li>
-<li>Actuator Availability: <code>Vehicle.Cabin.Door.IsOpen_Availability_Actuator</code>  </li>
-<li>Sensor Availability: <code>Vehicle.Cabin.Door.IsOpen_Availability_Sensor</code></li>
-</ul>
-</li>
-</ul>
-<p>If you want to check Availability as an actuator, you retrieve the value of the <code>_Availability_Actuator</code> node.<br />
-If you want to check Availability as a sensor, you retrieve the value of the <code>_Availability_Sensor</code> node.</p>
-<p>The second is as data within VISS.</p>
 <p>In the data type <code>DataPointCurrent</code>, which expresses signal data exchanged according to VISS,<br />
 members <code>is_available_actuator</code> and <code>is_available_sensor</code> are defined to represent Availability.</p>
 <p><code>DataPointCurrent</code> consists of the following members:</p>
@@ -1369,12 +1354,8 @@ members <code>is_available_actuator</code> and <code>is_available_sensor</code> 
 </ul>
 <p>If you want to check Availability as an actuator, refer to the value of <code>is_available_actuator</code>.<br />
 If you want to check Availability as a sensor, refer to the value of <code>is_available_sensor</code>.</p>
-<p>In the future, the representation as VSS nodes is planned to be removed, and representation as VISS data will be unified.</p>
-<p>The reasons are:</p>
-<ul>
-<li>Because the procedure to first check the value of an <code>_Availability</code> node and then determine whether an API call is allowed is complicated. It is simpler to execute an API call and receive an error when the call is unavailable (Unavailable), and this also reduces the number of API accesses by avoiding pre-checks.  </li>
-<li>When adding new VSS nodes (adding new equipment definitions), <code>_Availability</code> nodes must also be added at the same time. This increases the cost of adding VSS nodes and bloats the size of the VSS tree.</li>
-</ul>
+<p>In addition, when an application issues a <code>Set</code> request to a signal whose <code>is_available_actuator</code> is <code>false</code>, the Yoriito VISS Server rejects the request with <code>ERROR_SERVICE_UNAVAILABLE</code>.<br />
+Therefore, applications do not need to check Availability before every API call; they can simply execute the API call and handle the error when the signal is unavailable.</p>
 </div>
 <h4 id="2-5-4-conditions-under-which-availability-changes">2-5-4. Conditions Under Which Availability Changes</h4>
 <p>Availability changes according to various factors. PAL monitors the vehicle state and updates Availability according to these conditions.  </p>
@@ -1401,7 +1382,8 @@ If you want to check Availability as a sensor, refer to the value of <code>is_av
 <li><strong>ERROR_UNAUTHORIZED (401)</strong>: The access token is invalid.  </li>
 <li><strong>ERROR_FORBIDDEN (403)</strong>: The server refused to execute the request.  </li>
 <li><strong>ERROR_NOT_FOUND (404)</strong>: The requested data was not found.  </li>
-<li><strong>ERROR_REQUEST_TIMEOUT (408)</strong>: The request timed out.  </li>
+<li><strong>ERROR_REQUEST_TIMEOUT (408)</strong>: Subscribe duration limit exceeded.  </li>
+<li><strong>ERROR_UNSPECIFIED (409)</strong>: Parameter is unspecified.  </li>
 <li><strong>ERROR_TOO_MANY_REQUESTS (429)</strong>: Rate limiting due to too many requests.  </li>
 <li><strong>ERROR_INTERNAL_SERVER_ERROR (500)</strong>: An internal error occurred in the server.  </li>
 <li><strong>ERROR_BAD_GATEWAY (502)</strong>: The response from the upstream server is invalid.  </li>
@@ -1416,6 +1398,7 @@ If you want to check Availability as a sensor, refer to the value of <code>is_av
 <li><strong>ERROR_ACCES (13)</strong>: No permission.  </li>
 <li><strong>ERROR_INVAL (22)</strong>: Invalid argument.  </li>
 <li><strong>ERROR_NODATA (61)</strong>: Data does not exist.  </li>
+<li><strong>ERROR_BADMSG (74)</strong>: Bad message.  </li>
 <li><strong>ERROR_TIMEDOUT (110)</strong>: The operation timed out.  </li>
 <li><strong>ERROR_CONNREFUSED (111)</strong>: Connection refused.  </li>
 <li><strong>ERROR_CANCELED (125)</strong>: Operation was canceled.  </li>
@@ -1448,7 +1431,7 @@ If you want to check Availability as a sensor, refer to the value of <code>is_av
 <li>Sensor failures, actuator failures.  </li>
 <li>Errors related to Capability/Availability (e.g., below safety thresholds, priority conflicts, invocation limits, battery conditions).</li>
 </ul>
-<p>These errors are mapped to the error vocabulary defined by the DataBroker Producer API and propagated through the Yoriito VISS Server to the Yoriito Signal API and the application.</p>
+<p>These conditions are conveyed as the Availability (<code>is_available_sensor</code> / <code>is_available_actuator</code>) defined by the DataBroker Producer API and propagated through the Yoriito VISS Server to the Yoriito Signal API and the application.</p>
 <p>The figure summarizing the error handling flow at each layer is as follows:  </p>
 <p><img alt="Yoriito_ErrorPropagation" src="../assets/Yoriito_ErrorPropagation.drawio.svg" /></p>
 <p align="center"><em>Figure: Error Propagation</em></p>
@@ -1626,11 +1609,11 @@ Versions of individual components are referenced when developers track the chang
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "content.code.copy", "search.suggest", "search.highlight", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "content.code.copy", "search.suggest", "search.highlight", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
   
-      <script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   <script src="../../../assets/javascripts/custom.js"></script>

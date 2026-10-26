@@ -20,7 +20,7 @@
       
       
       <link rel="icon" href="../../../assets/yoriito.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
     
     
   
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.618322db.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1216,56 +1216,68 @@ $<span class="w"> </span>./pocket-pal
 <p><img alt="" src="../assets/pocket-pal-sequence.svg" /></p>
 <h4 id="7-3-3-modify-pocket-pal-cc">7-3-3. Modify pocket-pal-cc</h4>
 <h5 id="modify-can-vss-conversion">Modify CAN → VSS conversion</h5>
-<p>Here we modify the implementation that receives a CAN signal from vcan, converts it to VSS, and writes it to Kura. This process is implemented in the <a href="https://github.com/yoriito/yoriito-tutorial/blob/main/pocket-pal/pocket-pal-cc/main.cpp#L36">main.cpp(link)</a>.  </p>
-<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">on_can</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CANBroker</span><span class="o">&gt;</span><span class="w"> </span><span class="n">can_broker</span><span class="p">){</span>
-<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="n">running</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">frame</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">can_broker</span><span class="p">.</span><span class="n">get</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">read</span><span class="p">();</span>
-<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">frame</span><span class="p">.</span><span class="n">has_value</span><span class="p">()){</span>
-<span class="w">            </span><span class="k">continue</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">valid_frame</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">frame</span><span class="p">.</span><span class="n">value</span><span class="p">();</span>
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;[CAN][RECV]&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;id: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">valid_frame</span><span class="p">.</span><span class="n">can_id</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;, data: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">valid_frame</span><span class="p">.</span><span class="n">data</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-<span class="w">        </span><span class="n">VSSBroker</span><span class="o">::</span><span class="n">write</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">VEHICLE_SPEED</span><span class="p">,</span><span class="w"> </span><span class="mf">100.f</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
-<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;[VSS][SEND]&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;path: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">VEHICLE_SPEED</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;, payload: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mf">100.0f</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<p>Here we modify the implementation that receives a CAN signal from vcan, converts it to VSS, and writes it to Kura. This process is implemented in the <a href="https://github.com/yoriito/yoriito-tutorial/blob/main/pocket-pal/pocket-pal-cc/main.cpp">main.cpp(link)</a>.  </p>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">on_can</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">CANBroker</span><span class="o">&gt;</span><span class="w"> </span><span class="n">can_broker</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">running</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">frame</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">can_broker</span><span class="p">.</span><span class="n">get</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">read</span><span class="p">();</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">frame</span><span class="p">.</span><span class="n">has_value</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">continue</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">valid_frame</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">frame</span><span class="p">.</span><span class="n">value</span><span class="p">();</span>
+<span class="w">    </span><span class="n">YORIITO_LOG_INFO</span><span class="p">(</span><span class="s">"CAN"</span><span class="p">,</span><span class="w"> </span><span class="s">"[RECV] id: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">valid_frame</span><span class="p">.</span><span class="n">can_id</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                                </span><span class="s">", data: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">format_can_data</span><span class="p">(</span><span class="n">valid_frame</span><span class="p">));</span>
+
+<span class="w">    </span><span class="n">VSSBroker</span><span class="o">::</span><span class="n">write</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="kt">uint8_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">WINDOW_POSITION</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">);</span>
+<span class="w">    </span><span class="n">YORIITO_LOG_INFO</span><span class="p">(</span><span class="s">"VSS"</span><span class="p">,</span><span class="w"> </span><span class="s">"[SEND] path: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">WINDOW_POSITION</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                                </span><span class="s">", payload: 100"</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>As shown above, the data received from vcan is stored in the variable <code>valid_frame</code>. The code writes the value 100.f to Kura with the path VEHICLE_SPEED (=<code>Vehicle.Speed</code>).  </p>
-<p>For example, if you want to modify the implementation so that when the received CAN ID is 0x100, the first byte of the CAN payload is treated as vehicle speed and written to Kura, it will look like this.  </p>
-<div class="highlight"><pre><span></span><code>void on_can(std::shared_ptr&lt;CANBroker&gt; can_broker){
-<span class="w"> </span>   while(running) {
-<span class="w"> </span>       auto frame = can_broker.get()-&gt;read();
-<span class="w"> </span>       if (!frame.has_value()){
-<span class="w"> </span>           continue;
-<span class="w"> </span>       }
-<span class="w"> </span>       auto valid_frame = frame.value();
-<span class="w"> </span>       std::cout &lt;&lt; &quot;[CAN][RECV]&quot; &lt;&lt; &quot;id: &quot; &lt;&lt; valid_frame.can_id &lt;&lt; &quot;, data: &quot; &lt;&lt; valid_frame.data &lt;&lt; std::endl;
-
-<span class="gd">-       VSSBroker::write&lt;double&gt;(VEHICLE_SPEED, 100.f, true, true);</span>
-<span class="gd">-       std::cout &lt;&lt; &quot;[VSS][SEND]&quot; &lt;&lt; &quot;path: &quot; &lt;&lt; VEHICLE_SPEED &lt;&lt; &quot;, payload: &quot; &lt;&lt; 100.0f &lt;&lt; std::endl;        </span>
-<span class="gi">+       if (valid_frame.can_id == 0x100) {</span>
-<span class="gi">+           auto speed = static_cast&lt;double&gt;(valid_frame.data[0]);</span>
-<span class="gi">+           VSSBroker::write&lt;double&gt;(VEHICLE_SPEED, speed, true, true);</span>
-<span class="gi">+           std::cout &lt;&lt; &quot;[VSS][SEND]&quot; &lt;&lt; &quot;path: &quot; &lt;&lt; VEHICLE_SPEED &lt;&lt; &quot;, payload: &quot; &lt;&lt; speed &lt;&lt; std::endl;</span>
-<span class="gi">+       }</span>
+<p>As shown above, the data received from vcan is stored in the variable <code>valid_frame</code>. The code writes the value 100 to Kura with the path WINDOW_POSITION (=<code>Vehicle.Cabin.Door.Row1.DriverSide.Window.Position</code>).  </p>
+<p>For example, if you want to modify the implementation so that when the received CAN ID is 0x100, the first byte of the CAN payload is treated as window position and written to Kura, it will look like this.  </p>
+<div class="highlight"><pre><span></span><code>void on_can(std::shared_ptr&lt;CANBroker&gt; can_broker) {
+<span class="w"> </span> while (running) {
+<span class="w"> </span>   auto frame = can_broker.get()-&gt;read();
+<span class="w"> </span>   if (!frame.has_value()) {
+<span class="w"> </span>     continue;
 <span class="w"> </span>   }
+<span class="w"> </span>   auto valid_frame = frame.value();
+<span class="w"> </span>   YORIITO_LOG_INFO("CAN", "[RECV] id: " + std::to_string(valid_frame.can_id) +
+<span class="w"> </span>                               ", data: " + format_can_data(valid_frame));
+
+<span class="gd">-   VSSBroker::write&lt;std::uint8_t&gt;(WINDOW_POSITION, 100, true, true);</span>
+<span class="gd">-   YORIITO_LOG_INFO("VSS", "[SEND] path: " + std::string(WINDOW_POSITION) +</span>
+<span class="gd">-                               ", payload: 100");</span>
+<span class="gi">+   if (valid_frame.can_id == 0x100) {</span>
+<span class="gi">+     auto position = static_cast&lt;std::uint8_t&gt;(valid_frame.data[0]);</span>
+<span class="gi">+     VSSBroker::write&lt;std::uint8_t&gt;(WINDOW_POSITION, position, true, true);</span>
+<span class="gi">+     YORIITO_LOG_INFO(</span>
+<span class="gi">+         "VSS", "[SEND] path: " + std::string(WINDOW_POSITION) +</span>
+<span class="gi">+                    ", payload: " +</span>
+<span class="gi">+                    std::to_string(static_cast&lt;unsigned int&gt;(position)));</span>
+<span class="gi">+   }</span>
+<span class="w"> </span> }
 }
 </code></pre></div>
 <p>When you actually develop a <code>PAL</code>, you will update VSS data in Kura based on the received CAN frame in this way.  </p>
 <h5 id="modify-vss-can-conversion">Modify VSS → CAN conversion</h5>
-<p>Here we modify the implementation that receives VSS from Kura, converts it to CAN, and writes it to vcan. This process is implemented in the <a href="https://github.com/yoriito/yoriito-tutorial/blob/main/pocket-pal/pocket-pal-cc/main.cpp#L50">main.cpp(link)</a>.  </p>
+<p>Here we modify the implementation that receives VSS from Kura, converts it to CAN, and writes it to vcan. This process is implemented in the <a href="https://github.com/yoriito/yoriito-tutorial/blob/main/pocket-pal/pocket-pal-cc/main.cpp">main.cpp(link)</a>.  </p>
 <p>As shown in above link, the data received from Kura is stored in the variable <code>data_point</code>. The code writes a hard-coded payload to vcan with CAN ID 256.  </p>
-<p>For example, if you want to modify the implementation so that when the received VSS path is <code>Vehicle.Speed</code>, you send a CAN frame with ID 255 to vcan, <br />
-using the received vehicle speed as the first byte of the payload, it will look like this.  </p>
+<p>For example, if you want to modify the implementation so that when the received VSS path is <code>Vehicle.Cabin.Door.Row1.DriverSide.Window.Position</code>, you send a CAN frame with ID 255 to vcan, <br />
+using the received window position as the first byte of the payload, it will look like this.  </p>
 <div class="highlight"><pre><span></span><code>void on_vss(std::shared_ptr&lt;CANBroker&gt; can_broker){
 ...
 <span class="gd">-           // TODO: users need to build any can frame from data_point</span>
 <span class="gd">-           can_broker.get()-&gt;write(256, {0x27, 0x10, 0x1F, 0x40, 0x00, 0x00, 0x00, 0x00});</span>
-<span class="gd">-           std::cout &lt;&lt; &quot;[CAN][SEND]&quot; &lt;&lt; &quot;id: &quot; &lt;&lt; 256 &lt;&lt; &quot;, payload&quot; &lt;&lt; &quot;0x27, 0x10, 0x1F, 0x40, 0x00, 0x00, 0x00, 0x00&quot; &lt;&lt; std::endl;</span>
-<span class="gi">+           if (path == &quot;Vehicle.Speed&quot;) {</span>
-<span class="gi">+               auto speed = static_cast&lt;char&gt;(value);</span>
-<span class="gi">+               can_broker.get()-&gt;write(255, {speed, 0x10, 0x1F, 0x40, 0x00, 0x00, 0x00, 0x00});</span>
-<span class="gi">+               std::cout &lt;&lt; &quot;[CAN][SEND]&quot; &lt;&lt; &quot;id: &quot; &lt;&lt; 255 &lt;&lt; &quot;, payload&quot; &lt;&lt; speed &lt;&lt; &quot;, 0x10, 0x1F, 0x40, 0x00, 0x00, 0x00, 0x00&quot; &lt;&lt; std::endl;</span>
+<span class="gd">-           YORIITO_LOG_INFO("CAN", "[SEND] id: 256, payload: "</span>
+<span class="gd">-                                   "27 10 1f 40 00 00 00 00");</span>
+<span class="gi">+           if (path == WINDOW_POSITION) {</span>
+<span class="gi">+               auto position = std::get&lt;std::uint8_t&gt;(value);</span>
+<span class="gi">+               can_broker.get()-&gt;write(255, {position, 0x10, 0x1F, 0x40, 0x00, 0x00, 0x00, 0x00});</span>
+<span class="gi">+               YORIITO_LOG_INFO(</span>
+<span class="gi">+                   "CAN", "[SEND] id: 255, payload: " +</span>
+<span class="gi">+                              std::to_string(static_cast&lt;unsigned int&gt;(position)) +</span>
+<span class="gi">+                              " 10 1f 40 00 00 00 00");</span>
 <span class="gi">+           }</span>
 <span class="w"> </span>       }
 <span class="w"> </span>   }
@@ -1288,8 +1300,8 @@ $<span class="w"> </span>make<span class="w"> </span>install
 <span class="c1"># run</span>
 $<span class="w"> </span>vshot<span class="w"> </span>tui<span class="w">                           </span><span class="c1"># Use TUI mode</span>
 $<span class="w"> </span>vshot<span class="w"> </span>-i<span class="w">                            </span><span class="c1"># Use interactive mode</span>
-$<span class="w"> </span>vshot<span class="w"> </span>get-current<span class="w"> </span>Vehicle.Speed<span class="w">     </span><span class="c1"># Get the current value of Vehicle.Speed</span>
-$<span class="w"> </span>vshot<span class="w"> </span>set-current<span class="w"> </span>Vehicle.Speed<span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="c1"># Set the current value of Vehicle.Speed to 100</span>
+$<span class="w"> </span>vshot<span class="w"> </span>get-current<span class="w"> </span>Vehicle.Cabin.Door.Row1.DriverSide.Window.Position<span class="w">     </span><span class="c1"># Get the current value of Vehicle.Cabin.Door.Row1.DriverSide.Window.Position</span>
+$<span class="w"> </span>vshot<span class="w"> </span>set-current<span class="w"> </span>Vehicle.Cabin.Door.Row1.DriverSide.Window.Position<span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="c1"># Set the current value of Vehicle.Cabin.Door.Row1.DriverSide.Window.Position to 100</span>
 </code></pre></div>
 <p>For example, when you run it as a TUI, the following screen is displayed.  </p>
 <p><img alt="7-4-1-1" src="../assets/7-4-1-1.png" /></p>
@@ -1316,9 +1328,9 @@ $<span class="w"> </span>vshot<span class="w"> </span>set-current<span class="w"
 <li>Send a VSS signal<br />
   After step 1, PAL converts the received data to a VSS signal and notifies Kura.  </li>
 <li>Read the VSS signal<br />
-  Use the TUI to get the value. If you have not modified pocket-pal, the path to get is <code>Vehicle.Speed</code>.  </li>
+  Use the TUI to get the value. If you have not modified pocket-pal, the path to get is <code>Vehicle.Cabin.Door.Row1.DriverSide.Window.Position</code>.  </li>
 <li>Check the returned VSS signal<br />
-  The TUI returns the value of <code>Vehicle.Speed</code>. If you have not modified pocket-pal, you should get 100.  </li>
+  The TUI returns the value of <code>Vehicle.Cabin.Door.Row1.DriverSide.Window.Position</code>. If you have not modified pocket-pal, you should get 100.  </li>
 </ol>
 <h4 id="7-4-3-write-vss-to-kura-and-verify-that-a-can-frame-is-written-to-vcan">7-4-3. Write VSS to Kura and verify that a CAN frame is written to vcan</h4>
 <p>Refer to <a href="#7-4-2-write-a-can-frame-to-vcan-and-verify-that-it-is-written-to-kura-as-vss">Write a CAN frame to vcan and verify that it is written to Kura as VSS</a> and write VSS data to Kura from the TUI.  </p>
@@ -1331,7 +1343,7 @@ $<span class="w"> </span>vshot<span class="w"> </span>set-current<span class="w"
 <li>Symptom  <br />
     <div class="highlight"><pre><span></span><code>$<span class="w"> </span>./pocket-pal-cc/build/pocket-pal
 ioctl<span class="w"> </span>SIOCGIFINDEX<span class="w"> </span>failed,<span class="w"> </span><span class="nv">errno</span><span class="o">=</span><span class="m">19</span><span class="w"> </span><span class="o">(</span>No<span class="w"> </span>such<span class="w"> </span>device<span class="o">)</span>
-terminate<span class="w"> </span>called<span class="w"> </span>after<span class="w"> </span>throwing<span class="w"> </span>an<span class="w"> </span>instance<span class="w"> </span>of<span class="w"> </span><span class="s1">&#39;std::runtime_error&#39;</span>
+terminate<span class="w"> </span>called<span class="w"> </span>after<span class="w"> </span>throwing<span class="w"> </span>an<span class="w"> </span>instance<span class="w"> </span>of<span class="w"> </span><span class="s1">'std::runtime_error'</span>
 what<span class="o">()</span>:<span class="w">  </span>Failed<span class="w"> </span>to<span class="w"> </span>get<span class="w"> </span>interface<span class="w"> </span>index
 Aborted<span class="w"> </span><span class="o">(</span>core<span class="w"> </span>dumped<span class="o">)</span>
 </code></pre></div></li>
@@ -1402,7 +1414,7 @@ modprobe:<span class="w"> </span>FATAL:<span class="w"> </span>Module<span class
 <span class="nb">cd</span><span class="w"> </span>~/WSL2-Linux-Kernel
 make<span class="w"> </span>mrproper
 zcat<span class="w"> </span>/proc/config.gz<span class="w"> </span>&gt;<span class="w"> </span>.config
-<span class="nb">printf</span><span class="w"> </span><span class="s2">&quot;CONFIG_CAN=m\nCONFIG_CAN_RAW=m\nCONFIG_CAN_BCM=m\nCONFIG_CAN_GW=m\nCONFIG_CAN_DEV=m\nCONFIG_CAN_VCAN=m\n&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>.config
+<span class="nb">printf</span><span class="w"> </span><span class="s2">"CONFIG_CAN=m\nCONFIG_CAN_RAW=m\nCONFIG_CAN_BCM=m\nCONFIG_CAN_GW=m\nCONFIG_CAN_DEV=m\nCONFIG_CAN_VCAN=m\n"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>.config
 make<span class="w"> </span>olddefconfig
 make<span class="w"> </span>modules<span class="w"> </span>-j<span class="k">$(</span>nproc<span class="k">)</span>
 sudo<span class="w"> </span>make<span class="w"> </span>modules_install
@@ -1504,11 +1516,11 @@ sudo<span class="w"> </span>make<span class="w"> </span>modules_install
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "content.code.copy", "search.suggest", "search.highlight", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "content.code.copy", "search.suggest", "search.highlight", "navigation.footer"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
   
-      <script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   <script src="../../../assets/javascripts/custom.js"></script>
